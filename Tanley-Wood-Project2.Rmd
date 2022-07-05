@@ -1,0 +1,12 @@
+---
+title: "Tanley-Wood-Project2"
+author: "Jordan Tanley and Jonathan Wood"
+date: '2022-07-05'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Here's the new file - idk what happened but my R malfunctioned for somereason and I had to make a new one. 
