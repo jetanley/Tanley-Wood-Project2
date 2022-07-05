@@ -22,6 +22,7 @@ library(tidyverse)
 library(ggplot2)
 library(knitr)
 library(gridExtra)
+library(caret)
 ```
 
 In order to read in the data using a relative path, be sure to have the data file saved in your working directory.  
@@ -95,20 +96,20 @@ SocialMedia %>% filter(shares > quantile(shares, prob = 0.75)) %>%
 
 ```{r}
 # Boxplot of Shares for Each Weekday
-plot1 <- ggplot(SocialMedia, aes(x = weekday, y = shares)) + 
+ggplot(SocialMedia, aes(x = weekday, y = shares)) + 
           geom_boxplot(fill = "grey") + 
           labs(x = "Weekday", title = "Boxplot of Shares for Each Weekday", y = "Shares") + 
           theme_classic()
 
 # Scatterplot of Number of words in the content vs Shares
-plot2 <- ggplot(SocialMedia, aes(x = n_tokens_content, y = shares)) + 
+ggplot(SocialMedia, aes(x = n_tokens_content, y = shares)) + 
           geom_point(color = "grey") +
           labs(x = "Number of words in the content", y = "Shares", 
                title = "Scatterplot of Number of words in the content vs Shares") +
           theme_classic()
 
 # Scatterplot of Number of words in the title vs Shares
-plot2 <- ggplot(SocialMedia, aes(x = n_tokens_title, y = shares)) + 
+ggplot(SocialMedia, aes(x = n_tokens_title, y = shares)) + 
           geom_point(color = "grey") +
           labs(x = "Number of words in the title", y = "Shares", 
                title = "Scatterplot of Number of words in the title vs Shares") +
@@ -128,10 +129,51 @@ SocialMedia <- subset(SocialMedia, select = -c(weekday))
 
 # Modeling
 
+## Splitting the Data
+
+First, let's split up the data into a testing set and a training set using the proportions: 70% training and 30% testing.
+
+```{r}
+set.seed(9876)
+# Split the data into a training and test set (70/30 split)
+# indices
+train <- sample(1:nrow(SocialMedia), size = nrow(SocialMedia)*.70)
+test <- setdiff(1:nrow(SocialMedia), train)
+# trainiing and testing subsets
+Training <- SocialMedia[train, ]
+Testing <- SocialMedia[test, ]
+```
+
+## Linear Models
+
+INSERT EXPLANATION HERE! (note to myself - not yelling at you! lol)
+
+Linear Model #1: - Jordan
+
+```{r, warning=FALSE}
+fit1 <- train(shares ~ . , data = Training, method = "lm",
+              preProcess = c("center", "scale"), 
+              trControl = trainControl(method = "cv", number = 5))
+```
+
+Linear Model #2: - Jonathan
+
+```{r}
+
+```
 
 
 ## Random Forest - Jordan
 
+INSERT EXPLANATION HERE! (note to myself - not yelling at you! lol)
+
+```{r}
+ranfor <- train(shares ~ ., data = Training, method = "rf", preProcess = c("center", "scale"),
+                trControl = trainControl(method = "cv", number = 5), 
+                tuneGrid = expand.grid(mtry = c(1:round(ncol(Training)/3))))
+
+ranfor
+```
 
 
 
@@ -139,11 +181,34 @@ SocialMedia <- subset(SocialMedia, select = -c(weekday))
 
 
 
-# Comparison
 
 
 
-# Automation
+
+# Comparison - Jordan
+
+```{r, warning=FALSE}
+
+predRF <- predict(ranfor, newdata = Testing)
+RF <- postResample(predRF, Testing$shares)
+
+predlm1 <- predict(fit1, newdata = Testing)
+LM <- postResample(predlm1, Testing$shares)
+
+# NEEDS TO BE REPEATED FOR OTHER TWO MODELS - I'll do this later!
+
+dat <- data.frame(rbind(t(data.frame(LM)), t(data.frame(RF))))
+df <- as_tibble(rownames_to_column(dat, "models"))
+
+best <- df %>% filter(RMSE == min(RMSE)) %>% select(models)
+
+paste("The Best fitting model according to RMSE is", best$models, sep = " ")
+
+```
+
+
+
+# Automation - Jonathan
 
 
 
