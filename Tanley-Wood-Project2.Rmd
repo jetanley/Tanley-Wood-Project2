@@ -2,11 +2,68 @@
 title: "Tanley-Wood-Project2"
 author: "Jordan Tanley and Jonathan Wood"
 date: '2022-07-05'
-output: html_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-Here's the new file - idk what happened but my R malfunctioned for somereason and I had to make a new one. 
+Here's the new file - idk what happened but my R malfunctioned for some reason and I had to make a new one. 
+
+# Introduction - Jonathan
+
+
+
+# Data - Jordan
+
+```{r, include=FALSE}
+library(readr)
+library(tidyverse)
+```
+
+In order to read in the data using a relative path, be sure to have the data file saved in your working directory.  
+
+```{r}
+# read in the data
+news <- read_csv("OnlineNewsPopularity/OnlineNewsPopularity.csv")
+```
+
+Next, let's subset the data so that we can only look at the data channel of interest.
+
+```{r}
+SocialMedia <- news %>% 
+                as_tibble() %>% 
+                filter(data_channel_is_socmed == 1) %>% 
+                select(-c(url, timedelta, starts_with("data_channel")))
+head(SocialMedia)
+```
+
+
+# Summarizations - Both
+
+
+
+# Modeling
+
+
+
+## Random Forest - Jordan
+
+
+
+
+## Boosted Tree - Jonathan
+
+
+
+# Comparison
+
+
+
+# Automation
+
+
+
+
+
+
