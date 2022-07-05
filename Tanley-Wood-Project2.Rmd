@@ -19,6 +19,9 @@ Here's the new file - idk what happened but my R malfunctioned for some reason a
 ```{r, include=FALSE}
 library(readr)
 library(tidyverse)
+library(ggplot2)
+library(knitr)
+library(gridExtra)
 ```
 
 In order to read in the data using a relative path, be sure to have the data file saved in your working directory.  
@@ -27,6 +30,18 @@ In order to read in the data using a relative path, be sure to have the data fil
 # read in the data
 news <- read_csv("OnlineNewsPopularity/OnlineNewsPopularity.csv")
 ```
+
+```{r} 
+#DONT FORGET TO DROP THIS VARIABLE WHEN DOING RANDOM FOREST AND BOOSTED TREE
+news$weekday <- ifelse(news$weekday_is_friday == 1, "Friday",
+                       ifelse(news$weekday_is_monday == 1, "Monday",
+                              ifelse(news$weekday_is_tuesday == 1, "Tuesday",
+                                     ifelse(news$weekday_is_wednesday == 1, "Wednesday",
+                                            ifelse(news$weekday_is_thursday == 1, "Thursday",
+                                                   ifelse(news$weekday_is_saturday == 1, "Saturday", 
+                                                          "Sunday"))))))
+```
+
 
 Next, let's subset the data so that we can only look at the data channel of interest.
 
@@ -39,8 +54,76 @@ head(SocialMedia)
 ```
 
 
-# Summarizations - Both
+# Summarizations - Both (3 plots each)
 
+```{r}
+# Contingency table of frequencies for days of the week
+kable(table(SocialMedia$weekday), 
+      col.names = c("Weekday", "Frequency"), 
+      caption = "Contingency table of frequencies for days of the week")
+
+# Numerical Summary of Shares
+SocialMedia %>% summarise(Minimum = min(shares), 
+                          Q1 = quantile(shares, prob = 0.25), 
+                          Average = mean(shares), 
+                          Median = median(shares), 
+                          Q3 = quantile(shares, prob = 0.75), 
+                          Maximum = max(shares)) %>% 
+                kable(caption = "Numerical Summary of Shares")
+
+# Numerical Summary of Number of words in the content
+SocialMedia %>% summarise(Minimum = min(n_tokens_content), 
+                          Q1 = quantile(n_tokens_content, prob = 0.25), 
+                          Average = mean(n_tokens_content), 
+                          Median = median(n_tokens_content), 
+                          Q3 = quantile(n_tokens_content, prob = 0.75), 
+                          Maximum = max(n_tokens_content)) %>% 
+                kable(caption = "Numerical Summary of Number of words in the content")
+
+# Numerical Summary of Number of words in the content for the upper quantile of Shares
+SocialMedia %>% filter(shares > quantile(shares, prob = 0.75)) %>%
+                summarise(Minimum = min(n_tokens_content), 
+                          Q1 = quantile(n_tokens_content, prob = 0.25), 
+                          Average = mean(n_tokens_content), 
+                          Median = median(n_tokens_content), 
+                          Q3 = quantile(n_tokens_content, prob = 0.75), 
+                          Maximum = max(n_tokens_content)) %>% 
+                kable(caption = "Numerical Summary of Number of words in the content for the upper quantile of Shares")
+
+```
+
+
+```{r}
+# Boxplot of Shares for Each Weekday
+plot1 <- ggplot(SocialMedia, aes(x = weekday, y = shares)) + 
+          geom_boxplot(fill = "grey") + 
+          labs(x = "Weekday", title = "Boxplot of Shares for Each Weekday", y = "Shares") + 
+          theme_classic()
+
+# Scatterplot of Number of words in the content vs Shares
+plot2 <- ggplot(SocialMedia, aes(x = n_tokens_content, y = shares)) + 
+          geom_point(color = "grey") +
+          labs(x = "Number of words in the content", y = "Shares", 
+               title = "Scatterplot of Number of words in the content vs Shares") +
+          theme_classic()
+
+# Scatterplot of Number of words in the title vs Shares
+plot2 <- ggplot(SocialMedia, aes(x = n_tokens_title, y = shares)) + 
+          geom_point(color = "grey") +
+          labs(x = "Number of words in the title", y = "Shares", 
+               title = "Scatterplot of Number of words in the title vs Shares") +
+          theme_classic()
+
+```
+
+
+
+
+
+
+```{r}
+SocialMedia <- subset(SocialMedia, select = -c(weekday))
+```
 
 
 # Modeling
