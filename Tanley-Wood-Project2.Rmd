@@ -248,7 +248,6 @@ fit1 <- train(shares ~ . , data = Training, method = "lm",
 Linear Model #2: - Jonathan
 
 ```{r}
-fit2 <- train()
 ```
 
 
@@ -273,7 +272,6 @@ ranfor
 # Comparison - Jordan
 
 ```{r, warning=FALSE}
-
 predRF <- predict(ranfor, newdata = Testing)
 RF <- postResample(predRF, Testing$shares)
 
@@ -295,6 +293,15 @@ paste("The Best fitting model according to RMSE is", best$models, sep = " ")
 
 # Automation - Jonathan
 
-
+```{r, eval=FALSE}
+#rmarkdown::render(
+#  "Tanley-Wood-Project2.Rmd",
+#  output_format="github_document",
+#  output_dir="./Analysis",
+#  output_options = list(
+#    html_preview = FALSE
+#  )
+#)
+```
 
 
