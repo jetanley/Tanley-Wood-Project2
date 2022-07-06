@@ -78,6 +78,8 @@ head(SocialMedia)
 ```
 # Summarizations - Both (3 plots each)
 
+For the numerical summaries, we can look at several aspects. Contingency tables allow us to examine frequencies of categorical variables. The first output below, for example, shows the counts for each weekday. Similarly, the fifth table outputted shows the frequencies of number of tokens in the article content. Another set of summary statistics to look at are the 5 Number Summaries. These provide the minmum, 1st quantile, median, 3rd quantile, and maximum for a particular variable. Additionally, it may also be helful to look at the average. These are helpful in determining the skewness (if mean = median vs. mean < or > median) and helps in looking for outliers (anything outside (Q3 - Q1)1.5 from the median is generally considered an outlier). Below, the 5 Number summaries (plus mean) are shown for Shares, Number of words in the content, Number of words in the content for the upper quantile of Shares, number of images in the article, number of videos in the article, positive word rate, and negative word rate.
+
 ```{r}
 # Contingency table of frequencies for days of the week
 kable(table(SocialMedia$weekday), 
@@ -159,6 +161,8 @@ SocialMedia %>%
       Maximum = max(rate_negative_words)) %>% 
   kable(caption = "Numerical Summary of the rate of negative words in an article")
 ```
+
+The graphical summaries more dramatically show the trends in the data, including skewness and outliers. The boxplots below show a visual representation of the 5 Number summaries for Shares, split up by weekday, and shares split up by text sentiment polarity. Boxplots make it even easier to look out for outliers (look for the dots separated from the main boxplot). Next, we can examine several scatterplots. Scatterplots allow us to look at one numerical variable vs another to see if there is any correlation between them. Look out for any plots that have most of the points on a diagonal line! There are four scatterplots below, investigating shares vs Number of words in the content, Number of words in the title, rate of positive words, and rate of negative words. Finally, a histogram can show the overall distribution of a numerical variable, including skewness. The histogram below sows the distribution of the shares variable. Look for a left or right tail to signify skewness, and look out for multiple peaks to signify a multi-modal variable.
 
 ```{r}
 # Boxplot of Shares for Each Weekday
