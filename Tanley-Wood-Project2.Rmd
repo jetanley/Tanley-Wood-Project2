@@ -8,11 +8,33 @@ date: '2022-07-05'
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-Here's the new file - idk what happened but my R malfunctioned for some reason and I had to make a new one. 
-
 # Introduction - Jonathan
 
+## Data
 
+The data in this analysis will be the [online news popularity dataset](https://archive.ics.uci.edu/ml/datasets/Online+News+Popularity). This data has a set of features on articles from Mashable.com over a two year period. 
+
+The goal of this project is to determine the number of shares (how many times the article was shared over social media) the article has. We will use this information to predict if an article can be popular by the number of shares.
+
+## Notable Variables
+
+While there are 61 variables in the data set, we will not use all of them for this project. The notable variables are the following:
+
+- "shares" - the number of shares the article has gotten over social media. This is the label or variable we want our models to predict for new articles
+- "data_channel_is" - a set of variables that tells if the article is in a particular category, such as business, sports, or lifestyle.
+- "weekday_is" - a set of variables that tells what day of the week the article was published on.
+- "num_keywords" - the number of keywords within the article
+- "num_images" - the number of images within the article
+- "num_videos" - the number of videos within the article
+
+## Methods
+
+Multiple methods will be used for this project to predict the number of shares a new article can generate, including
+
+- Linear regression
+- Tree-based models
+  - Random forest
+  - Boosted tree
 
 # Data - Jordan
 
@@ -30,6 +52,8 @@ In order to read in the data using a relative path, be sure to have the data fil
 ```{r}
 # read in the data
 news <- read_csv("OnlineNewsPopularity/OnlineNewsPopularity.csv")
+
+head(news)
 ```
 
 ```{r} 
@@ -118,10 +142,6 @@ ggplot(SocialMedia, aes(x = n_tokens_title, y = shares)) +
 ```
 
 
-
-
-
-
 ```{r}
 SocialMedia <- subset(SocialMedia, select = -c(weekday))
 ```
@@ -139,7 +159,8 @@ set.seed(9876)
 # indices
 train <- sample(1:nrow(SocialMedia), size = nrow(SocialMedia)*.70)
 test <- setdiff(1:nrow(SocialMedia), train)
-# trainiing and testing subsets
+
+# training and testing subsets
 Training <- SocialMedia[train, ]
 Testing <- SocialMedia[test, ]
 ```
@@ -159,7 +180,7 @@ fit1 <- train(shares ~ . , data = Training, method = "lm",
 Linear Model #2: - Jonathan
 
 ```{r}
-
+fit2 <- train()
 ```
 
 
@@ -178,10 +199,6 @@ ranfor
 
 
 ## Boosted Tree - Jonathan
-
-
-
-
 
 
 
@@ -209,8 +226,6 @@ paste("The Best fitting model according to RMSE is", best$models, sep = " ")
 
 
 # Automation - Jonathan
-
-
 
 
 
