@@ -248,6 +248,13 @@ fit1 <- train(shares ~ . , data = Training, method = "lm",
 Linear Model #2: - Jonathan
 
 ```{r}
+lm_fit <- train(
+  shares ~ .^2,
+  data=Training,
+  method="lm",
+  preProcess = c("center", "scale"), 
+  trControl = trainControl(method = "cv", number = 5)
+)
 ```
 
 
@@ -267,6 +274,24 @@ ranfor
 
 ## Boosted Tree - Jonathan
 
+```{r}
+tune_grid <- expand.grid(
+  n.trees = c(5, 10, 50, 100),
+  interaction.depth = c(1,2,3, 4),
+  shrinkage = 0.1,
+  n.minobsinnode = 10
+)
+
+bt_fit <- train(
+  shares ~ .,
+  data=Training,
+  method="gbm",
+  preProcess = c("center", "scale"), 
+  trControl = trainControl(method = "cv", number = 5)
+)
+
+bt_fit
+```
 
 
 # Comparison - Jordan
@@ -286,9 +311,7 @@ df <- as_tibble(rownames_to_column(dat, "models"))
 best <- df %>% filter(RMSE == min(RMSE)) %>% select(models)
 
 paste("The Best fitting model according to RMSE is", best$models, sep = " ")
-
 ```
-
 
 
 # Automation - Jonathan
