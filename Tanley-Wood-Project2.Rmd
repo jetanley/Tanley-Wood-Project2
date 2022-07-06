@@ -184,7 +184,29 @@ ggplot(SocialMedia, aes(x = n_tokens_title, y = shares)) +
 ```
 
 ```{r}
+ggplot(SocialMedia, aes(x=shares)) +
+  geom_histogram(color="grey") +
+  labs(x = "Number of images in an article", 
+               title = "Histogram of number of shares") +
+  theme_classic()
 
+ggplot(SocialMedia, aes(x=rate_positive_words, y=shares)) +
+  geom_point(color="grey") +
+  labs(x = "Number of images in an article", y = "Shares", 
+               title = "Scatterplot of rate of positive words in an article vs shares") +
+  theme_classic()
+
+ggplot(SocialMedia, aes(x=rate_negative_words, y=shares)) +
+  geom_point(color="grey") +
+  labs(x = "Number of images in an article", y = "Shares", 
+               title = "Scatterplot of rate of negative words in an article vs shares") +
+  theme_classic()
+
+ggplot(SocialMedia, aes(x=global_sentiment_polarity, y=shares)) +
+  geom_boxplot(color="grey") +
+  labs(x = "Number of images in an article", y = "Shares", 
+               title = "Scatterplot of global sentiment polarity in an article vs shares") +
+  theme_classic()
 ```
 
 
