@@ -76,7 +76,8 @@ SocialMedia <- news %>%
 # take a peek at the data
 head(SocialMedia)
 ```
-# Summarizations - Both (3 plots each)
+
+# Summarizations - Both (at least 3 plots each)
 
 For the numerical summaries, we can look at several aspects. Contingency tables allow us to examine frequencies of categorical variables. The first output below, for example, shows the counts for each weekday. Similarly, the fifth table outputted shows the frequencies of number of tokens in the article content. Another set of summary statistics to look at are the 5 Number Summaries. These provide the minmum, 1st quantile, median, 3rd quantile, and maximum for a particular variable. Additionally, it may also be helful to look at the average. These are helpful in determining the skewness (if mean = median vs. mean < or > median) and helps in looking for outliers (anything outside (Q3 - Q1)1.5 from the median is generally considered an outlier). Below, the 5 Number summaries (plus mean) are shown for Shares, Number of words in the content, Number of words in the content for the upper quantile of Shares, number of images in the article, number of videos in the article, positive word rate, and negative word rate.
 
@@ -189,26 +190,26 @@ ggplot(SocialMedia, aes(x = n_tokens_title, y = shares)) +
 
 ```{r graphsJW}
 ggplot(SocialMedia, aes(x=shares)) +
-  geom_histogram(color="grey") +
-  labs(x = "Number of images in an article", 
+  geom_histogram(color="grey", binwidth = 2000) +
+  labs(x = "Shares", 
                title = "Histogram of number of shares") +
   theme_classic()
 
 ggplot(SocialMedia, aes(x=rate_positive_words, y=shares)) +
   geom_point(color="grey") +
-  labs(x = "Number of images in an article", y = "Shares", 
+  labs(x = "rate of positive words in an article", y = "Shares", 
                title = "Scatterplot of rate of positive words in an article vs shares") +
   theme_classic()
 
 ggplot(SocialMedia, aes(x=rate_negative_words, y=shares)) +
   geom_point(color="grey") +
-  labs(x = "Number of images in an article", y = "Shares", 
+  labs(x = "rate of negative words in an article", y = "Shares", 
                title = "Scatterplot of rate of negative words in an article vs shares") +
   theme_classic()
 
 ggplot(SocialMedia, aes(x=global_sentiment_polarity, y=shares)) +
-  geom_boxplot(color="grey") +
-  labs(x = "Number of images in an article", y = "Shares", 
+  geom_point(color="grey") +
+  labs(x = "global sentiment polarity in an article", y = "Shares", 
                title = "Scatterplot of global sentiment polarity in an article vs shares") +
   theme_classic()
 ```
@@ -253,7 +254,7 @@ fit1 <- train(shares ~ . , data = Training, method = "lm",
 
 Linear Model #2: - Jonathan
 
-```{r, linmod2}
+```{r, linmod2, warning=FALSE}
 lm_fit <- train(
   shares ~ .^2,
   data=Training,
@@ -315,14 +316,15 @@ predlm1 <- predict(fit1, newdata = Testing)
 LM <- postResample(predlm1, Testing$shares)
 
 # linear model 2 prediction on testing model and its performance
+predlm2 <- predict(lm_fit, newdata = Testing)
+LM2 <- postResample(predlm2, Testing$shares)
 
 # boosted tree prediction on testing model and its performance
-
-
-# NEEDS TO BE REPEATED FOR OTHER TWO MODELS - I'll do this later!
+predbt <- predict(bt_fit, newdata = Testing)
+BT <- postResample(predbt, Testing$shares)
 
 # combine each of the performance stats for the models and add a column with the model names
-dat <- data.frame(rbind(t(data.frame(LM)), t(data.frame(RF))))
+dat <- data.frame(rbind(t(data.frame(LM)), t(data.frame(RF)), t(data.frame(LM2)), t(data.frame(BT))))
 df <- as_tibble(rownames_to_column(dat, "models"))
 
 # find the model with the lowesr RMSE
