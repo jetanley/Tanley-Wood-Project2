@@ -38,10 +38,8 @@ Multiple methods will be used for this project to predict the number of shares a
 
 # Data - Jordan
 
-```{r, include=FALSE}
-library(readr)
+```{r packages, include=FALSE}
 library(tidyverse)
-library(ggplot2)
 library(knitr)
 library(gridExtra)
 library(caret)
@@ -49,15 +47,15 @@ library(caret)
 
 In order to read in the data using a relative path, be sure to have the data file saved in your working directory.  
 
-```{r}
+```{r read}
 # read in the data
 news <- read_csv("OnlineNewsPopularity/OnlineNewsPopularity.csv")
-
+# sneek peek at the dataset
 head(news)
 ```
 
-```{r} 
-#DONT FORGET TO DROP THIS VARIABLE WHEN DOING RANDOM FOREST AND BOOSTED TREE
+```{r weekday} 
+# Creating a weekday variable (basically undoing the 7 dummy variables that came with the data) for EDA
 news$weekday <- ifelse(news$weekday_is_friday == 1, "Friday",
                        ifelse(news$weekday_is_monday == 1, "Monday",
                               ifelse(news$weekday_is_tuesday == 1, "Tuesday",
@@ -69,22 +67,26 @@ news$weekday <- ifelse(news$weekday_is_friday == 1, "Friday",
 
 Next, let's subset the data so that we can only look at the data channel of interest. We will look at articles with the "Social Media" data channel.
 
-```{r}
+```{r subset}
+# subset the data to only one of the data channels and drop unnecessary varaibles
 SocialMedia <- news %>% 
                 as_tibble() %>% 
                 filter(data_channel_is_socmed == 1) %>% 
                 select(-c(url, timedelta, starts_with("data_channel")))
+# take a peek at the data
 head(SocialMedia)
 ```
 # Summarizations - Both (3 plots each)
 
-```{r}
-# Contingency table of frequencies for days of the week
+For the numerical summaries, we can look at several aspects. Contingency tables allow us to examine frequencies of categorical variables. The first output below, for example, shows the counts for each weekday. Similarly, the fifth table outputted shows the frequencies of number of tokens in the article content. Another set of summary statistics to look at are the 5 Number Summaries. These provide the minmum, 1st quantile, median, 3rd quantile, and maximum for a particular variable. Additionally, it may also be helful to look at the average. These are helpful in determining the skewness (if mean = median vs. mean < or > median) and helps in looking for outliers (anything outside (Q3 - Q1)1.5 from the median is generally considered an outlier). Below, the 5 Number summaries (plus mean) are shown for Shares, Number of words in the content, Number of words in the content for the upper quantile of Shares, number of images in the article, number of videos in the article, positive word rate, and negative word rate.
+
+```{r numsumJT}
+# Contingency table of frequencies for days of the week, added caption for clarity
 kable(table(SocialMedia$weekday), 
       col.names = c("Weekday", "Frequency"), 
       caption = "Contingency table of frequencies for days of the week")
 
-# Numerical Summary of Shares
+# Numerical Summary of Shares, added caption for clarity
 SocialMedia %>% summarise(Minimum = min(shares), 
                           Q1 = quantile(shares, prob = 0.25), 
                           Average = mean(shares), 
@@ -93,7 +95,7 @@ SocialMedia %>% summarise(Minimum = min(shares),
                           Maximum = max(shares)) %>% 
                 kable(caption = "Numerical Summary of Shares")
 
-# Numerical Summary of Number of words in the content
+# Numerical Summary of Number of words in the content, added caption for clarity
 SocialMedia %>% summarise(Minimum = min(n_tokens_content), 
                           Q1 = quantile(n_tokens_content, prob = 0.25), 
                           Average = mean(n_tokens_content), 
@@ -102,7 +104,7 @@ SocialMedia %>% summarise(Minimum = min(n_tokens_content),
                           Maximum = max(n_tokens_content)) %>% 
                 kable(caption = "Numerical Summary of Number of words in the content")
 
-# Numerical Summary of Number of words in the content for the upper quantile of Shares
+# Numerical Summary of Number of words in the content for the upper quantile of Shares, added caption for clarity
 SocialMedia %>% filter(shares > quantile(shares, prob = 0.75)) %>%
                 summarise(Minimum = min(n_tokens_content), 
                           Q1 = quantile(n_tokens_content, prob = 0.25), 
@@ -114,7 +116,7 @@ SocialMedia %>% filter(shares > quantile(shares, prob = 0.75)) %>%
 
 ```
 
-```{r}
+```{r numsumJW}
 kable(table(SocialMedia$n_tokens_content),
   col.names = c("Tokens", "Frequency"), 
   caption = "Contingency table of frequencies for number of tokens in the article content")
@@ -160,21 +162,23 @@ SocialMedia %>%
   kable(caption = "Numerical Summary of the rate of negative words in an article")
 ```
 
-```{r}
-# Boxplot of Shares for Each Weekday
+The graphical summaries more dramatically show the trends in the data, including skewness and outliers. The boxplots below show a visual representation of the 5 Number summaries for Shares, split up by weekday, and shares split up by text sentiment polarity. Boxplots make it even easier to look out for outliers (look for the dots separated from the main boxplot). Next, we can examine several scatterplots. Scatterplots allow us to look at one numerical variable vs another to see if there is any correlation between them. Look out for any plots that have most of the points on a diagonal line! There are four scatterplots below, investigating shares vs Number of words in the content, Number of words in the title, rate of positive words, and rate of negative words. Finally, a histogram can show the overall distribution of a numerical variable, including skewness. The histogram below sows the distribution of the shares variable. Look for a left or right tail to signify skewness, and look out for multiple peaks to signify a multi-modal variable.
+
+```{r graphsJT}
+# Boxplot of Shares for Each Weekday, colored gray with classic theme, added labels and title
 ggplot(SocialMedia, aes(x = weekday, y = shares)) + 
           geom_boxplot(fill = "grey") + 
           labs(x = "Weekday", title = "Boxplot of Shares for Each Weekday", y = "Shares") + 
           theme_classic()
 
-# Scatterplot of Number of words in the content vs Shares
+# Scatterplot of Number of words in the content vs Shares, colored gray with classic theme, added labels and title
 ggplot(SocialMedia, aes(x = n_tokens_content, y = shares)) + 
           geom_point(color = "grey") +
           labs(x = "Number of words in the content", y = "Shares", 
                title = "Scatterplot of Number of words in the content vs Shares") +
           theme_classic()
 
-# Scatterplot of Number of words in the title vs Shares
+# Scatterplot of Number of words in the title vs Shares, colored gray with classic theme, added labels and title
 ggplot(SocialMedia, aes(x = n_tokens_title, y = shares)) + 
           geom_point(color = "grey") +
           labs(x = "Number of words in the title", y = "Shares", 
@@ -183,7 +187,7 @@ ggplot(SocialMedia, aes(x = n_tokens_title, y = shares)) +
 
 ```
 
-```{r}
+```{r graphsJW}
 ggplot(SocialMedia, aes(x=shares)) +
   geom_histogram(color="grey") +
   labs(x = "Number of images in an article", 
@@ -210,7 +214,8 @@ ggplot(SocialMedia, aes(x=global_sentiment_polarity, y=shares)) +
 ```
 
 
-```{r}
+```{r dropweekday}
+# drop the weekday variable created for EDA (will get in the way for our models if we don't drop it)
 SocialMedia <- subset(SocialMedia, select = -c(weekday))
 ```
 
@@ -221,7 +226,7 @@ SocialMedia <- subset(SocialMedia, select = -c(weekday))
 
 First, let's split up the data into a testing set and a training set using the proportions: 70% training and 30% testing.
 
-```{r}
+```{r split}
 set.seed(9876)
 # Split the data into a training and test set (70/30 split)
 # indices
@@ -235,11 +240,12 @@ Testing <- SocialMedia[test, ]
 
 ## Linear Models
 
-INSERT EXPLANATION HERE! (note to myself - not yelling at you! lol)
+Linear regression models allow us to look at relationships between one response variable and several explanatory variables. A model can also include interaction terms and even higher order terms. The general form for a linear model is $Y_i = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + ... + E_i$, where each $x_i$ represents a predictor variable and the "..." can include more predictors, interactions and/or higher order terms. Since our goal is to predict shares, we will be using these models to predict of a subset of the data created for training, and then we will later test the models on the other subsetted data set aside for testing. 
 
 Linear Model #1: - Jordan
 
-```{r, warning=FALSE}
+```{r linmod1, warning=FALSE}
+# linear model on training dataset with 5-fold cv
 fit1 <- train(shares ~ . , data = Training, method = "lm",
               preProcess = c("center", "scale"), 
               trControl = trainControl(method = "cv", number = 5))
@@ -247,7 +253,7 @@ fit1 <- train(shares ~ . , data = Training, method = "lm",
 
 Linear Model #2: - Jonathan
 
-```{r}
+```{r, linmod2}
 lm_fit <- train(
   shares ~ .^2,
   data=Training,
@@ -260,9 +266,10 @@ lm_fit <- train(
 
 ## Random Forest - Jordan
 
-INSERT EXPLANATION HERE! (note to myself - not yelling at you! lol)
+Random Forest is a tree based method for fitting predictive models, that averages across all trees. One may choose to use a tree based methood due to their prediction accuracy, the fact that predictors do not need to be scaled, no statistical assumptions, and a built-in variable selection process. Random forest, in particular, randomly selects a subset of $m = p / 3$ predictors. This corrects the bagging issue where every bootstrap contains a strong predictor for the first split. 
 
-```{r}
+```{r rf}
+# fandom forest model on training dataset with 5-fold cv
 ranfor <- train(shares ~ ., data = Training, method = "rf", preProcess = c("center", "scale"),
                 trControl = trainControl(method = "cv", number = 5), 
                 tuneGrid = expand.grid(mtry = c(1:round(ncol(Training)/3))))
@@ -296,20 +303,32 @@ bt_fit
 
 # Comparison - Jordan
 
-```{r, warning=FALSE}
+Finally, let's compare our four models: 2 linear models, 1 random forest model, and 1 boosted tree model.
+
+```{r comparisons, warning=FALSE}
+# random forest prediction on testing model and its performance
 predRF <- predict(ranfor, newdata = Testing)
 RF <- postResample(predRF, Testing$shares)
 
+# linear model 1 prediction on testing model and its performance
 predlm1 <- predict(fit1, newdata = Testing)
 LM <- postResample(predlm1, Testing$shares)
 
+# linear model 2 prediction on testing model and its performance
+
+# boosted tree prediction on testing model and its performance
+
+
 # NEEDS TO BE REPEATED FOR OTHER TWO MODELS - I'll do this later!
 
+# combine each of the performance stats for the models and add a column with the model names
 dat <- data.frame(rbind(t(data.frame(LM)), t(data.frame(RF))))
 df <- as_tibble(rownames_to_column(dat, "models"))
 
+# find the model with the lowesr RMSE
 best <- df %>% filter(RMSE == min(RMSE)) %>% select(models)
 
+# print "The Best fitting model according to RMSE is [insert model name for lowest RMSE here]"
 paste("The Best fitting model according to RMSE is", best$models, sep = " ")
 ```
 
