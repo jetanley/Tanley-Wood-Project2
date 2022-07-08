@@ -7,7 +7,7 @@ The purpose of this repo is to store the necessary files for the ST558 Project 2
 
 ## Required R Packages
 
-The repqired packages include:
+The required packages include:
 
 * [`tidyverse`](https://www.tidyverse.org/): This package loads in several packages, 3 of which we will use:  
   - [`readr`](https://readr.tidyverse.org/): Used to read in the data  

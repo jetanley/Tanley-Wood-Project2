@@ -2,10 +2,12 @@
 title: "Tanley-Wood-Project2"
 author: "Jordan Tanley and Jonathan Wood"
 date: '2022-07-05'
+params:
+  channel: "lifestyle"
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, eval=TRUE, fig.path = "./images/")
 ```
 
 # Introduction - Jonathan
@@ -68,13 +70,19 @@ news$weekday <- ifelse(news$weekday_is_friday == 1, "Friday",
 Next, let's subset the data so that we can only look at the data channel of interest. We will look at articles with the "Social Media" data channel.
 
 ```{r subset}
-# subset the data to only one of the data channels and drop unnecessary varaibles
-SocialMedia <- news %>% 
+# Subset the data to  one of the parameterized data channels and drop unnecessary variables
+chan <- paste0("data_channel_is_", params$channel)
+
+print(chan)
+
+filtered_channel <- news %>% 
                 as_tibble() %>% 
-                filter(data_channel_is_socmed == 1) %>% 
-                select(-c(url, timedelta, starts_with("data_channel")))
+                filter(news[chan] == 1) %>% 
+                select(-c(url, timedelta))
+
 # take a peek at the data
-head(SocialMedia)
+filtered_channel %>%
+  select(ends_with(chan))
 ```
 # Summarizations - Both (3 plots each)
 
@@ -82,12 +90,12 @@ For the numerical summaries, we can look at several aspects. Contingency tables 
 
 ```{r numsumJT}
 # Contingency table of frequencies for days of the week, added caption for clarity
-kable(table(SocialMedia$weekday), 
+kable(table(filtered_channel$weekday), 
       col.names = c("Weekday", "Frequency"), 
       caption = "Contingency table of frequencies for days of the week")
 
 # Numerical Summary of Shares, added caption for clarity
-SocialMedia %>% summarise(Minimum = min(shares), 
+filtered_channel %>% summarise(Minimum = min(shares), 
                           Q1 = quantile(shares, prob = 0.25), 
                           Average = mean(shares), 
                           Median = median(shares), 
@@ -96,7 +104,7 @@ SocialMedia %>% summarise(Minimum = min(shares),
                 kable(caption = "Numerical Summary of Shares")
 
 # Numerical Summary of Number of words in the content, added caption for clarity
-SocialMedia %>% summarise(Minimum = min(n_tokens_content), 
+filtered_channel %>% summarise(Minimum = min(n_tokens_content), 
                           Q1 = quantile(n_tokens_content, prob = 0.25), 
                           Average = mean(n_tokens_content), 
                           Median = median(n_tokens_content), 
@@ -105,7 +113,7 @@ SocialMedia %>% summarise(Minimum = min(n_tokens_content),
                 kable(caption = "Numerical Summary of Number of words in the content")
 
 # Numerical Summary of Number of words in the content for the upper quantile of Shares, added caption for clarity
-SocialMedia %>% filter(shares > quantile(shares, prob = 0.75)) %>%
+filtered_channel %>% filter(shares > quantile(shares, prob = 0.75)) %>%
                 summarise(Minimum = min(n_tokens_content), 
                           Q1 = quantile(n_tokens_content, prob = 0.25), 
                           Average = mean(n_tokens_content), 
@@ -117,12 +125,12 @@ SocialMedia %>% filter(shares > quantile(shares, prob = 0.75)) %>%
 ```
 
 ```{r numsumJW}
-kable(table(SocialMedia$n_tokens_content),
+kable(table(filtered_channel$n_tokens_content),
   col.names = c("Tokens", "Frequency"), 
   caption = "Contingency table of frequencies for number of tokens in the article content")
 
 # Summarizing the number of images in the article
-SocialMedia %>% 
+filtered_channel %>% 
   summarise(Minimum = min(num_imgs), 
       Q1 = quantile(num_imgs, prob = 0.25), 
       Average = mean(num_imgs), 
@@ -132,7 +140,7 @@ SocialMedia %>%
   kable(caption = "Numerical summary of number of images in an article")
 
 # Summarizing the number of videos in the article
-SocialMedia %>% 
+filtered_channel %>% 
   summarise(Minimum = min(num_videos), 
       Q1 = quantile(num_videos, prob = 0.25), 
       Average = mean(num_videos), 
@@ -142,7 +150,7 @@ SocialMedia %>%
   kable(caption = "Numerical summary of number of videos in an article")
 
 # Summarizing the number of positive word rate
-SocialMedia %>% 
+filtered_channel %>% 
   summarise(Minimum = min(rate_positive_words), 
       Q1 = quantile(rate_positive_words, prob = 0.25), 
       Average = mean(rate_positive_words), 
@@ -152,7 +160,7 @@ SocialMedia %>%
   kable(caption = "Numerical Summary of the rate of positive words in an article")
 
 # Summarizing the number of negative word rate
-SocialMedia %>% 
+filtered_channel %>% 
   summarise(Minimum = min(rate_negative_words), 
       Q1 = quantile(rate_negative_words, prob = 0.25), 
       Average = mean(rate_negative_words), 
@@ -166,20 +174,20 @@ The graphical summaries more dramatically show the trends in the data, including
 
 ```{r graphsJT}
 # Boxplot of Shares for Each Weekday, colored gray with classic theme, added labels and title
-ggplot(SocialMedia, aes(x = weekday, y = shares)) + 
+ggplot(filtered_channel, aes(x = weekday, y = shares)) + 
           geom_boxplot(fill = "grey") + 
           labs(x = "Weekday", title = "Boxplot of Shares for Each Weekday", y = "Shares") + 
           theme_classic()
 
 # Scatterplot of Number of words in the content vs Shares, colored gray with classic theme, added labels and title
-ggplot(SocialMedia, aes(x = n_tokens_content, y = shares)) + 
+ggplot(filtered_channel, aes(x = n_tokens_content, y = shares)) + 
           geom_point(color = "grey") +
           labs(x = "Number of words in the content", y = "Shares", 
                title = "Scatterplot of Number of words in the content vs Shares") +
           theme_classic()
 
 # Scatterplot of Number of words in the title vs Shares, colored gray with classic theme, added labels and title
-ggplot(SocialMedia, aes(x = n_tokens_title, y = shares)) + 
+ggplot(filtered_channel, aes(x = n_tokens_title, y = shares)) + 
           geom_point(color = "grey") +
           labs(x = "Number of words in the title", y = "Shares", 
                title = "Scatterplot of Number of words in the title vs Shares") +
@@ -188,25 +196,25 @@ ggplot(SocialMedia, aes(x = n_tokens_title, y = shares)) +
 ```
 
 ```{r graphsJW}
-ggplot(SocialMedia, aes(x=shares)) +
+ggplot(filtered_channel, aes(x=shares)) +
   geom_histogram(color="grey") +
   labs(x = "Number of images in an article", 
                title = "Histogram of number of shares") +
   theme_classic()
 
-ggplot(SocialMedia, aes(x=rate_positive_words, y=shares)) +
+ggplot(filtered_channel, aes(x=rate_positive_words, y=shares)) +
   geom_point(color="grey") +
   labs(x = "Number of images in an article", y = "Shares", 
                title = "Scatterplot of rate of positive words in an article vs shares") +
   theme_classic()
 
-ggplot(SocialMedia, aes(x=rate_negative_words, y=shares)) +
+ggplot(filtered_channel, aes(x=rate_negative_words, y=shares)) +
   geom_point(color="grey") +
   labs(x = "Number of images in an article", y = "Shares", 
                title = "Scatterplot of rate of negative words in an article vs shares") +
   theme_classic()
 
-ggplot(SocialMedia, aes(x=global_sentiment_polarity, y=shares)) +
+ggplot(filtered_channel, aes(x=global_sentiment_polarity, y=shares)) +
   geom_boxplot(color="grey") +
   labs(x = "Number of images in an article", y = "Shares", 
                title = "Scatterplot of global sentiment polarity in an article vs shares") +
@@ -216,7 +224,7 @@ ggplot(SocialMedia, aes(x=global_sentiment_polarity, y=shares)) +
 
 ```{r dropweekday}
 # drop the weekday variable created for EDA (will get in the way for our models if we don't drop it)
-SocialMedia <- subset(SocialMedia, select = -c(weekday))
+filtered_channel <- subset(filtered_channel, select = -c(weekday))
 ```
 
 
@@ -230,12 +238,12 @@ First, let's split up the data into a testing set and a training set using the p
 set.seed(9876)
 # Split the data into a training and test set (70/30 split)
 # indices
-train <- sample(1:nrow(SocialMedia), size = nrow(SocialMedia)*.70)
-test <- setdiff(1:nrow(SocialMedia), train)
+train <- sample(1:nrow(filtered_channel), size = nrow(filtered_channel)*.70)
+test <- setdiff(1:nrow(filtered_channel), train)
 
 # training and testing subsets
-Training <- SocialMedia[train, ]
-Testing <- SocialMedia[test, ]
+Training <- filtered_channel[train, ]
+Testing <- filtered_channel[test, ]
 ```
 
 ## Linear Models
