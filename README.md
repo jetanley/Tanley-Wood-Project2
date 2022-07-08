@@ -22,12 +22,12 @@ The required packages include:
 
 Here are the links to each of the rendered documents:
 
-* [Lifestyle]()  
-* [Entertainment]()  
-* [Business]()  
-* [Social Media](./analysis/Tanley-Wood-Project2.md)  (Note: I think the links will be in the format similar to https://jetanley.github.io/Jordans-Project-1/)
-* [Tech]()  
-* [World]()
+* [Lifestyle](https://jetanley.github.io/Tanley-Wood-Project2/Analysis/Tanley-Wood-Project2-lifestyle)  
+* [Entertainment](https://jetanley.github.io/Tanley-Wood-Project2/Analysis/Tanley-Wood-Project2-entertainment)  
+* [Business](https://jetanley.github.io/Tanley-Wood-Project2/Analysis/Tanley-Wood-Project2-bus)  
+* [Social Media](https://jetanley.github.io/Tanley-Wood-Project2/Analysis/Tanley-Wood-Project2-socmed)
+* [Tech](https://jetanley.github.io/Tanley-Wood-Project2/Analysis/Tanley-Wood-Project2-tech)
+* [World](https://jetanley.github.io/Tanley-Wood-Project2/Analysis/Tanley-Wood-Project2-world)
 
 ## Render Code
 
