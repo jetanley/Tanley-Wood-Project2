@@ -29,7 +29,23 @@ Here are the links to each of the rendered documents:
 * [Tech]()  
 * [World]()
 
-
-
 ## Render Code
 
+```r
+data_channels = c("lifestyle", "entertainment", "bus", "socmed", "tech", "world")
+
+for (channel in data_channels) {
+  rmarkdown::render(
+    "Tanley-Wood-Project2.Rmd",
+    output_format = "github_document",
+    output_dir = "./Analysis",
+    output_options = list(
+      html_preview = FALSE
+    ),
+    params = list(
+      channel = channel
+    ),
+    output_file = paste0("Tanley-Wood-Project2-", channel, ".md")
+  )
+}
+```

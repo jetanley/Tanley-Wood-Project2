@@ -54,10 +54,10 @@ news <- read_csv("OnlineNewsPopularity/OnlineNewsPopularity.csv")
 ```
 
     ## Rows: 39644 Columns: 61
-    ## ── Column specification ───────────────────────────
+    ## ── Column specification ─────────────────────────────────────────────────────────────────────────────────────────────
     ## Delimiter: ","
     ## chr  (1): url
-    ## dbl (60): timedelta, n_tokens_title, n_tokens_c...
+    ## dbl (60): timedelta, n_tokens_title, n_tokens_content, n_unique_tokens, n_non_stop_words, n_non_stop_unique_token...
     ## 
     ## ℹ Use `spec()` to retrieve the full column specification for this data.
     ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
@@ -102,7 +102,7 @@ filtered_channel %>%
   select(ends_with(chan))
 ```
 
-# Summarizations - Both (3 plots each)
+# Summarizations - Both (at least 3 plots each)
 
 For the numerical summaries, we can look at several aspects. Contingency
 tables allow us to examine frequencies of categorical variables. The
@@ -1376,7 +1376,7 @@ ggplot(filtered_channel, aes(x = weekday, y = shares)) +
           theme_classic()
 ```
 
-![](./images/graphsJT-1.png)<!-- -->
+![](../images/graphsJT-1.png)<!-- -->
 
 ``` r
 # Scatterplot of Number of words in the content vs Shares, colored gray with classic theme, added labels and title
@@ -1387,7 +1387,7 @@ ggplot(filtered_channel, aes(x = n_tokens_content, y = shares)) +
           theme_classic()
 ```
 
-![](./images/graphsJT-2.png)<!-- -->
+![](../images/graphsJT-2.png)<!-- -->
 
 ``` r
 # Scatterplot of Number of words in the title vs Shares, colored gray with classic theme, added labels and title
@@ -1398,53 +1398,47 @@ ggplot(filtered_channel, aes(x = n_tokens_title, y = shares)) +
           theme_classic()
 ```
 
-![](./images/graphsJT-3.png)<!-- -->
+![](../images/graphsJT-3.png)<!-- -->
 
 ``` r
 ggplot(filtered_channel, aes(x=shares)) +
-  geom_histogram(color="grey") +
-  labs(x = "Number of images in an article", 
+  geom_histogram(color="grey", binwidth = 2000) +
+  labs(x = "Shares", 
                title = "Histogram of number of shares") +
   theme_classic()
 ```
 
-    ## `stat_bin()` using `bins = 30`. Pick better
-    ## value with `binwidth`.
-
-![](./images/graphsJW-1.png)<!-- -->
+![](../images/graphsJW-1.png)<!-- -->
 
 ``` r
 ggplot(filtered_channel, aes(x=rate_positive_words, y=shares)) +
   geom_point(color="grey") +
-  labs(x = "Number of images in an article", y = "Shares", 
+  labs(x = "rate of positive words in an article", y = "Shares", 
                title = "Scatterplot of rate of positive words in an article vs shares") +
   theme_classic()
 ```
 
-![](./images/graphsJW-2.png)<!-- -->
+![](../images/graphsJW-2.png)<!-- -->
 
 ``` r
 ggplot(filtered_channel, aes(x=rate_negative_words, y=shares)) +
   geom_point(color="grey") +
-  labs(x = "Number of images in an article", y = "Shares", 
+  labs(x = "rate of negative words in an article", y = "Shares", 
                title = "Scatterplot of rate of negative words in an article vs shares") +
   theme_classic()
 ```
 
-![](./images/graphsJW-3.png)<!-- -->
+![](../images/graphsJW-3.png)<!-- -->
 
 ``` r
 ggplot(filtered_channel, aes(x=global_sentiment_polarity, y=shares)) +
-  geom_boxplot(color="grey") +
-  labs(x = "Number of images in an article", y = "Shares", 
+  geom_point(color="grey") +
+  labs(x = "global sentiment polarity in an article", y = "Shares", 
                title = "Scatterplot of global sentiment polarity in an article vs shares") +
   theme_classic()
 ```
 
-    ## Warning: Continuous x aesthetic -- did you forget
-    ## aes(group=...)?
-
-![](./images/graphsJW-4.png)<!-- -->
+![](../images/graphsJW-4.png)<!-- -->
 
 ``` r
 # drop the weekday variable created for EDA (will get in the way for our models if we don't drop it)
@@ -1506,1184 +1500,6 @@ lm_fit <- train(
 )
 ```
 
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment,
-    ## data_channel_is_bus, data_channel_is_socmed,
-    ## data_channel_is_tech, data_channel_is_world,
-    ## n_tokens_title:data_channel_is_lifestyle,
-    ## n_tokens_title:data_channel_is_entertainment,
-    ## n_tokens_title:data_channel_is_bus,
-    ## n_tokens_title:data_channel_is_tech,
-    ## n_tokens_title:data_channel_is_world,
-    ## n_tokens_content:data_channel_is_lifestyle,
-    ## n_tokens_content:data_channel_is_entertainment,
-    ## n_tokens_content:data_channel_is_bus,
-    ## n_tokens_content:data_channel_is_tech,
-    ## n_tokens_content:data_channel_is_world,
-    ## n_unique_tokens:data_channel_is_lifestyle,
-    ## n_unique_tokens:data_channel_is_entertainment,
-    ## n_unique_tokens:data_channel_is_bus,
-    ## n_unique_tokens:data_channel_is_tech,
-    ## n_unique_tokens:data_channel_is_world,
-    ## n_non_stop_words:data_channel_is_lifestyle,
-    ## n_non_stop_words:data_channel_is_entertainment,
-    ## n_non_stop_words:data_channel_is_bus,
-    ## n_non_stop_words:data_channel_is_tech,
-    ## n_non_stop_words:data_channel_is_world,
-    ## n_non_stop_unique_tokens:data_channel_is_lifestyle,
-    ## n_non_stop_unique_tokens:data_channel_is_entertainment,
-    ## n_non_stop_unique_tokens:data_channel_is_bus,
-    ## n_non_stop_unique_tokens:data_channel_is_tech,
-    ## n_non_stop_unique_tokens:data_channel_is_world,
-    ## num_hrefs:data_channel_is_lifestyle,
-    ## num_hrefs:data_channel_is_entertainment,
-    ## num_hrefs:data_channel_is_bus,
-    ## num_hrefs:data_channel_is_tech,
-    ## num_hrefs:data_channel_is_world,
-    ## num_self_hrefs:data_channel_is_lifestyle,
-    ## num_self_hrefs:data_channel_is_entertainment,
-    ## num_self_hrefs:data_channel_is_bus,
-    ## num_self_hrefs:data_channel_is_tech,
-    ## num_self_hrefs:data_channel_is_world,
-    ## num_imgs:data_channel_is_lifestyle,
-    ## num_imgs:data_channel_is_entertainment,
-    ## num_imgs:data_channel_is_bus,
-    ## num_imgs:data_channel_is_tech,
-    ## num_imgs:data_channel_is_world,
-    ## num_videos:data_channel_is_lifestyle,
-    ## num_videos:data_channel_is_entertainment,
-    ## num_videos:data_channel_is_bus,
-    ## num_videos:data_channel_is_tech,
-    ## num_videos:data_channel_is_world,
-    ## average_token_length:data_channel_is_lifestyle,
-    ## average_token_length:data_channel_is_entertainment,
-    ## average_token_length:data_channel_is_bus,
-    ## average_token_length:data_channel_is_tech,
-    ## average_token_length:data_channel_is_world,
-    ## num_keywords:data_channel_is_lifestyle,
-    ## num_keywords:data_channel_is_entertainment,
-    ## num_keywords:data_channel_is_bus,
-    ## num_keywords:data_channel_is_tech,
-    ## num_keywords:data_channel_is_world,
-    ## data_channel_is_lifestyle:data_channel_is_entertainment,
-    ## data_channel_is_lifestyle:data_channel_is_bus,
-    ## data_channel_is_lifestyle:data_channel_is_socmed,
-    ## data_channel_is_lifestyle:data_channel_is_tech,
-    ## data_channel_is_lifestyle:data_channel_is_world,
-    ## data_channel_is_lifestyle:kw_min_min,
-    ## data_channel_is_lifestyle:kw_max_min,
-    ## data_channel_is_lifestyle:kw_avg_min,
-    ## data_channel_is_lifestyle:kw_min_max,
-    ## data_channel_is_lifestyle:kw_max_max,
-    ## data_channel_is_lifestyle:kw_avg_max,
-    ## data_channel_is_lifestyle:kw_min_avg,
-    ## data_channel_is_lifestyle:kw_max_avg,
-    ## data_channel_is_lifestyle:kw_avg_avg,
-    ## data_channel_is_lifestyle:self_reference_min_shares,
-    ## data_channel_is_lifestyle:self_reference_max_shares,
-    ## data_channel_is_lifestyle:self_reference_avg_sharess,
-    ## data_channel_is_lifestyle:weekday_is_monday,
-    ## data_channel_is_lifestyle:weekday_is_tuesday,
-    ## data_channel_is_lifestyle:weekday_is_wednesday,
-    ## data_channel_is_lifestyle:weekday_is_thursday,
-    ## data_channel_is_lifestyle:weekday_is_friday,
-    ## data_channel_is_lifestyle:weekday_is_saturday,
-    ## data_channel_is_lifestyle:weekday_is_sunday,
-    ## data_channel_is_lifestyle:is_weekend,
-    ## data_channel_is_lifestyle:LDA_00,
-    ## data_channel_is_lifestyle:LDA_01,
-    ## data_channel_is_lifestyle:LDA_02,
-    ## data_channel_is_lifestyle:LDA_03,
-    ## data_channel_is_lifestyle:LDA_04,
-    ## data_channel_is_lifestyle:global_subjectivity,
-    ## data_channel_is_lifestyle:global_sentiment_polarity,
-    ## data_channel_is_lifestyle:global_rate_positive_words,
-    ## data_channel_is_lifestyle:global_rate_negative_words,
-    ## data_channel_is_lifestyle:rate_positive_words,
-    ## data_channel_is_lifestyle:rate_negative_words,
-    ## data_channel_is_lifestyle:avg_positive_polarity,
-    ## data_channel_is_lifestyle:min_positive_polarity,
-    ## data_channel_is_lifestyle:max_positive_polarity,
-    ## data_channel_is_lifestyle:avg_negative_polarity,
-    ## data_channel_is_lifestyle:min_negative_polarity,
-    ## data_channel_is_lifestyle:max_negative_polarity,
-    ## data_channel_is_lifestyle:title_subjectivity,
-    ## data_channel_is_lifestyle:title_sentiment_polarity,
-    ## data_channel_is_lifestyle:abs_title_subjectivity,
-    ## data_channel_is_lifestyle:abs_title_sentiment_polarity,
-    ## data_channel_is_entertainment:data_channel_is_bus,
-    ## data_channel_is_entertainment:data_channel_is_socmed,
-    ## data_channel_is_entertainment:data_channel_is_tech,
-    ## data_channel_is_entertainment:data_channel_is_world,
-    ## data_channel_is_entertainment:kw_min_min,
-    ## data_channel_is_entertainment:kw_max_min,
-    ## data_channel_is_entertainment:kw_avg_min,
-    ## data_channel_is_entertainment:kw_min_max,
-    ## data_channel_is_entertainment:kw_max_max,
-    ## data_channel_is_entertainment:kw_avg_max,
-    ## data_channel_is_entertainment:kw_min_avg,
-    ## data_channel_is_entertainment:kw_max_avg,
-    ## data_channel_is_entertainment:kw_avg_avg,
-    ## data_channel_is_entertainment:self_reference_min_shares,
-    ## data_channel_is_entertainment:self_reference_max_shares,
-    ## data_channel_is_entertainment:self_reference_avg_sharess,
-    ## data_channel_is_entertainment:weekday_is_monday,
-    ## data_channel_is_entertainment:weekday_is_tuesday,
-    ## data_channel_is_entertainment:weekday_is_wednesday,
-    ## data_channel_is_entertainment:weekday_is_thursday,
-    ## data_channel_is_entertainment:weekday_is_friday,
-    ## data_channel_is_entertainment:weekday_is_saturday,
-    ## data_channel_is_entertainment:weekday_is_sunday,
-    ## data_channel_is_entertainment:is_weekend,
-    ## data_channel_is_entertainment:LDA_00,
-    ## data_channel_is_entertainment:LDA_01,
-    ## data_channel_is_entertainment:LDA_02,
-    ## data_channel_is_entertainment:LDA_03,
-    ## data_channel_is_entertainment:LDA_04,
-    ## data_channel_is_entertainment:global_subjectivity,
-    ## data_channel_is_entertainment:global_sentiment_polarity,
-    ## data_channel_is_entertainment:global_rate_positive_words,
-    ## data_channel_is_entertainment:global_rate_negative_words,
-    ## data_channel_is_entertainment:rate_positive_words,
-    ## data_channel_is_entertainment:rate_negative_words,
-    ## data_channel_is_entertainment:avg_positive_polarity,
-    ## data_channel_is_entertainment:min_positive_polarity,
-    ## data_channel_is_entertainment:max_positive_polarity,
-    ## data_channel_is_entertainment:avg_negative_polarity,
-    ## data_channel_is_entertainment:min_negative_polarity,
-    ## data_channel_is_entertainment:max_negative_polarity,
-    ## data_channel_is_entertainment:title_subjectivity,
-    ## data_channel_is_entertainment:title_sentiment_polarity,
-    ## data_channel_is_entertainment:abs_title_subjectivity,
-    ## data_channel_is_entertainment:abs_title_sentiment_polarity,
-    ## data_channel_is_bus:data_channel_is_socmed,
-    ## data_channel_is_bus:data_channel_is_tech,
-    ## data_channel_is_bus:data_channel_is_world,
-    ## data_channel_is_bus:kw_min_min,
-    ## data_channel_is_bus:kw_max_min,
-    ## data_channel_is_bus:kw_avg_min,
-    ## data_channel_is_bus:kw_min_max,
-    ## data_channel_is_bus:kw_max_max,
-    ## data_channel_is_bus:kw_avg_max,
-    ## data_channel_is_bus:kw_min_avg,
-    ## data_channel_is_bus:kw_max_avg,
-    ## data_channel_is_bus:kw_avg_avg,
-    ## data_channel_is_bus:self_reference_min_shares,
-    ## data_channel_is_bus:self_reference_max_shares,
-    ## data_channel_is_bus:self_reference_avg_sharess,
-    ## data_channel_is_bus:weekday_is_monday,
-    ## data_channel_is_bus:weekday_is_tuesday,
-    ## data_channel_is_bus:weekday_is_wednesday,
-    ## data_channel_is_bus:weekday_is_thursday,
-    ## data_channel_is_bus:weekday_is_friday,
-    ## data_channel_is_bus:weekday_is_saturday,
-    ## data_channel_is_bus:weekday_is_sunday,
-    ## data_channel_is_bus:is_weekend,
-    ## data_channel_is_bus:LDA_00,
-    ## data_channel_is_bus:LDA_01,
-    ## data_channel_is_bus:LDA_02,
-    ## data_channel_is_bus:LDA_03,
-    ## data_channel_is_bus:LDA_04,
-    ## data_channel_is_bus:global_subjectivity,
-    ## data_channel_is_bus:global_sentiment_polarity,
-    ## data_channel_is_bus:global_rate_positive_words,
-    ## data_channel_is_bus:global_rate_negative_words,
-    ## data_channel_is_bus:rate_positive_words,
-    ## data_channel_is_bus:rate_negative_words,
-    ## data_channel_is_bus:avg_positive_polarity,
-    ## data_channel_is_bus:min_positive_polarity,
-    ## data_channel_is_bus:max_positive_polarity,
-    ## data_channel_is_bus:avg_negative_polarity,
-    ## data_channel_is_bus:min_negative_polarity,
-    ## data_channel
-
-    ## Warning in predict.lm(modelFit, newdata):
-    ## prediction from a rank-deficient fit may be
-    ## misleading
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment,
-    ## data_channel_is_bus, data_channel_is_socmed,
-    ## data_channel_is_tech, data_channel_is_world,
-    ## n_tokens_title:data_channel_is_lifestyle,
-    ## n_tokens_title:data_channel_is_entertainment,
-    ## n_tokens_title:data_channel_is_bus,
-    ## n_tokens_title:data_channel_is_tech,
-    ## n_tokens_title:data_channel_is_world,
-    ## n_tokens_content:data_channel_is_lifestyle,
-    ## n_tokens_content:data_channel_is_entertainment,
-    ## n_tokens_content:data_channel_is_bus,
-    ## n_tokens_content:data_channel_is_tech,
-    ## n_tokens_content:data_channel_is_world,
-    ## n_unique_tokens:data_channel_is_lifestyle,
-    ## n_unique_tokens:data_channel_is_entertainment,
-    ## n_unique_tokens:data_channel_is_bus,
-    ## n_unique_tokens:data_channel_is_tech,
-    ## n_unique_tokens:data_channel_is_world,
-    ## n_non_stop_words:data_channel_is_lifestyle,
-    ## n_non_stop_words:data_channel_is_entertainment,
-    ## n_non_stop_words:data_channel_is_bus,
-    ## n_non_stop_words:data_channel_is_tech,
-    ## n_non_stop_words:data_channel_is_world,
-    ## n_non_stop_unique_tokens:data_channel_is_lifestyle,
-    ## n_non_stop_unique_tokens:data_channel_is_entertainment,
-    ## n_non_stop_unique_tokens:data_channel_is_bus,
-    ## n_non_stop_unique_tokens:data_channel_is_tech,
-    ## n_non_stop_unique_tokens:data_channel_is_world,
-    ## num_hrefs:data_channel_is_lifestyle,
-    ## num_hrefs:data_channel_is_entertainment,
-    ## num_hrefs:data_channel_is_bus,
-    ## num_hrefs:data_channel_is_tech,
-    ## num_hrefs:data_channel_is_world,
-    ## num_self_hrefs:data_channel_is_lifestyle,
-    ## num_self_hrefs:data_channel_is_entertainment,
-    ## num_self_hrefs:data_channel_is_bus,
-    ## num_self_hrefs:data_channel_is_tech,
-    ## num_self_hrefs:data_channel_is_world,
-    ## num_imgs:data_channel_is_lifestyle,
-    ## num_imgs:data_channel_is_entertainment,
-    ## num_imgs:data_channel_is_bus,
-    ## num_imgs:data_channel_is_tech,
-    ## num_imgs:data_channel_is_world,
-    ## num_videos:data_channel_is_lifestyle,
-    ## num_videos:data_channel_is_entertainment,
-    ## num_videos:data_channel_is_bus,
-    ## num_videos:data_channel_is_tech,
-    ## num_videos:data_channel_is_world,
-    ## average_token_length:data_channel_is_lifestyle,
-    ## average_token_length:data_channel_is_entertainment,
-    ## average_token_length:data_channel_is_bus,
-    ## average_token_length:data_channel_is_tech,
-    ## average_token_length:data_channel_is_world,
-    ## num_keywords:data_channel_is_lifestyle,
-    ## num_keywords:data_channel_is_entertainment,
-    ## num_keywords:data_channel_is_bus,
-    ## num_keywords:data_channel_is_tech,
-    ## num_keywords:data_channel_is_world,
-    ## data_channel_is_lifestyle:data_channel_is_entertainment,
-    ## data_channel_is_lifestyle:data_channel_is_bus,
-    ## data_channel_is_lifestyle:data_channel_is_socmed,
-    ## data_channel_is_lifestyle:data_channel_is_tech,
-    ## data_channel_is_lifestyle:data_channel_is_world,
-    ## data_channel_is_lifestyle:kw_min_min,
-    ## data_channel_is_lifestyle:kw_max_min,
-    ## data_channel_is_lifestyle:kw_avg_min,
-    ## data_channel_is_lifestyle:kw_min_max,
-    ## data_channel_is_lifestyle:kw_max_max,
-    ## data_channel_is_lifestyle:kw_avg_max,
-    ## data_channel_is_lifestyle:kw_min_avg,
-    ## data_channel_is_lifestyle:kw_max_avg,
-    ## data_channel_is_lifestyle:kw_avg_avg,
-    ## data_channel_is_lifestyle:self_reference_min_shares,
-    ## data_channel_is_lifestyle:self_reference_max_shares,
-    ## data_channel_is_lifestyle:self_reference_avg_sharess,
-    ## data_channel_is_lifestyle:weekday_is_monday,
-    ## data_channel_is_lifestyle:weekday_is_tuesday,
-    ## data_channel_is_lifestyle:weekday_is_wednesday,
-    ## data_channel_is_lifestyle:weekday_is_thursday,
-    ## data_channel_is_lifestyle:weekday_is_friday,
-    ## data_channel_is_lifestyle:weekday_is_saturday,
-    ## data_channel_is_lifestyle:weekday_is_sunday,
-    ## data_channel_is_lifestyle:is_weekend,
-    ## data_channel_is_lifestyle:LDA_00,
-    ## data_channel_is_lifestyle:LDA_01,
-    ## data_channel_is_lifestyle:LDA_02,
-    ## data_channel_is_lifestyle:LDA_03,
-    ## data_channel_is_lifestyle:LDA_04,
-    ## data_channel_is_lifestyle:global_subjectivity,
-    ## data_channel_is_lifestyle:global_sentiment_polarity,
-    ## data_channel_is_lifestyle:global_rate_positive_words,
-    ## data_channel_is_lifestyle:global_rate_negative_words,
-    ## data_channel_is_lifestyle:rate_positive_words,
-    ## data_channel_is_lifestyle:rate_negative_words,
-    ## data_channel_is_lifestyle:avg_positive_polarity,
-    ## data_channel_is_lifestyle:min_positive_polarity,
-    ## data_channel_is_lifestyle:max_positive_polarity,
-    ## data_channel_is_lifestyle:avg_negative_polarity,
-    ## data_channel_is_lifestyle:min_negative_polarity,
-    ## data_channel_is_lifestyle:max_negative_polarity,
-    ## data_channel_is_lifestyle:title_subjectivity,
-    ## data_channel_is_lifestyle:title_sentiment_polarity,
-    ## data_channel_is_lifestyle:abs_title_subjectivity,
-    ## data_channel_is_lifestyle:abs_title_sentiment_polarity,
-    ## data_channel_is_entertainment:data_channel_is_bus,
-    ## data_channel_is_entertainment:data_channel_is_socmed,
-    ## data_channel_is_entertainment:data_channel_is_tech,
-    ## data_channel_is_entertainment:data_channel_is_world,
-    ## data_channel_is_entertainment:kw_min_min,
-    ## data_channel_is_entertainment:kw_max_min,
-    ## data_channel_is_entertainment:kw_avg_min,
-    ## data_channel_is_entertainment:kw_min_max,
-    ## data_channel_is_entertainment:kw_max_max,
-    ## data_channel_is_entertainment:kw_avg_max,
-    ## data_channel_is_entertainment:kw_min_avg,
-    ## data_channel_is_entertainment:kw_max_avg,
-    ## data_channel_is_entertainment:kw_avg_avg,
-    ## data_channel_is_entertainment:self_reference_min_shares,
-    ## data_channel_is_entertainment:self_reference_max_shares,
-    ## data_channel_is_entertainment:self_reference_avg_sharess,
-    ## data_channel_is_entertainment:weekday_is_monday,
-    ## data_channel_is_entertainment:weekday_is_tuesday,
-    ## data_channel_is_entertainment:weekday_is_wednesday,
-    ## data_channel_is_entertainment:weekday_is_thursday,
-    ## data_channel_is_entertainment:weekday_is_friday,
-    ## data_channel_is_entertainment:weekday_is_saturday,
-    ## data_channel_is_entertainment:weekday_is_sunday,
-    ## data_channel_is_entertainment:is_weekend,
-    ## data_channel_is_entertainment:LDA_00,
-    ## data_channel_is_entertainment:LDA_01,
-    ## data_channel_is_entertainment:LDA_02,
-    ## data_channel_is_entertainment:LDA_03,
-    ## data_channel_is_entertainment:LDA_04,
-    ## data_channel_is_entertainment:global_subjectivity,
-    ## data_channel_is_entertainment:global_sentiment_polarity,
-    ## data_channel_is_entertainment:global_rate_positive_words,
-    ## data_channel_is_entertainment:global_rate_negative_words,
-    ## data_channel_is_entertainment:rate_positive_words,
-    ## data_channel_is_entertainment:rate_negative_words,
-    ## data_channel_is_entertainment:avg_positive_polarity,
-    ## data_channel_is_entertainment:min_positive_polarity,
-    ## data_channel_is_entertainment:max_positive_polarity,
-    ## data_channel_is_entertainment:avg_negative_polarity,
-    ## data_channel_is_entertainment:min_negative_polarity,
-    ## data_channel_is_entertainment:max_negative_polarity,
-    ## data_channel_is_entertainment:title_subjectivity,
-    ## data_channel_is_entertainment:title_sentiment_polarity,
-    ## data_channel_is_entertainment:abs_title_subjectivity,
-    ## data_channel_is_entertainment:abs_title_sentiment_polarity,
-    ## data_channel_is_bus:data_channel_is_socmed,
-    ## data_channel_is_bus:data_channel_is_tech,
-    ## data_channel_is_bus:data_channel_is_world,
-    ## data_channel_is_bus:kw_min_min,
-    ## data_channel_is_bus:kw_max_min,
-    ## data_channel_is_bus:kw_avg_min,
-    ## data_channel_is_bus:kw_min_max,
-    ## data_channel_is_bus:kw_max_max,
-    ## data_channel_is_bus:kw_avg_max,
-    ## data_channel_is_bus:kw_min_avg,
-    ## data_channel_is_bus:kw_max_avg,
-    ## data_channel_is_bus:kw_avg_avg,
-    ## data_channel_is_bus:self_reference_min_shares,
-    ## data_channel_is_bus:self_reference_max_shares,
-    ## data_channel_is_bus:self_reference_avg_sharess,
-    ## data_channel_is_bus:weekday_is_monday,
-    ## data_channel_is_bus:weekday_is_tuesday,
-    ## data_channel_is_bus:weekday_is_wednesday,
-    ## data_channel_is_bus:weekday_is_thursday,
-    ## data_channel_is_bus:weekday_is_friday,
-    ## data_channel_is_bus:weekday_is_saturday,
-    ## data_channel_is_bus:weekday_is_sunday,
-    ## data_channel_is_bus:is_weekend,
-    ## data_channel_is_bus:LDA_00,
-    ## data_channel_is_bus:LDA_01,
-    ## data_channel_is_bus:LDA_02,
-    ## data_channel_is_bus:LDA_03,
-    ## data_channel_is_bus:LDA_04,
-    ## data_channel_is_bus:global_subjectivity,
-    ## data_channel_is_bus:global_sentiment_polarity,
-    ## data_channel_is_bus:global_rate_positive_words,
-    ## data_channel_is_bus:global_rate_negative_words,
-    ## data_channel_is_bus:rate_positive_words,
-    ## data_channel_is_bus:rate_negative_words,
-    ## data_channel_is_bus:avg_positive_polarity,
-    ## data_channel_is_bus:min_positive_polarity,
-    ## data_channel_is_bus:max_positive_polarity,
-    ## data_channel_is_bus:avg_negative_polarity,
-    ## data_channel_is_bus:min_negative_polarity,
-    ## data_channel
-
-    ## Warning in predict.lm(modelFit, newdata):
-    ## prediction from a rank-deficient fit may be
-    ## misleading
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment,
-    ## data_channel_is_bus, data_channel_is_socmed,
-    ## data_channel_is_tech, data_channel_is_world,
-    ## n_tokens_title:data_channel_is_lifestyle,
-    ## n_tokens_title:data_channel_is_entertainment,
-    ## n_tokens_title:data_channel_is_bus,
-    ## n_tokens_title:data_channel_is_tech,
-    ## n_tokens_title:data_channel_is_world,
-    ## n_tokens_content:data_channel_is_lifestyle,
-    ## n_tokens_content:data_channel_is_entertainment,
-    ## n_tokens_content:data_channel_is_bus,
-    ## n_tokens_content:data_channel_is_tech,
-    ## n_tokens_content:data_channel_is_world,
-    ## n_unique_tokens:data_channel_is_lifestyle,
-    ## n_unique_tokens:data_channel_is_entertainment,
-    ## n_unique_tokens:data_channel_is_bus,
-    ## n_unique_tokens:data_channel_is_tech,
-    ## n_unique_tokens:data_channel_is_world,
-    ## n_non_stop_words:data_channel_is_lifestyle,
-    ## n_non_stop_words:data_channel_is_entertainment,
-    ## n_non_stop_words:data_channel_is_bus,
-    ## n_non_stop_words:data_channel_is_tech,
-    ## n_non_stop_words:data_channel_is_world,
-    ## n_non_stop_unique_tokens:data_channel_is_lifestyle,
-    ## n_non_stop_unique_tokens:data_channel_is_entertainment,
-    ## n_non_stop_unique_tokens:data_channel_is_bus,
-    ## n_non_stop_unique_tokens:data_channel_is_tech,
-    ## n_non_stop_unique_tokens:data_channel_is_world,
-    ## num_hrefs:data_channel_is_lifestyle,
-    ## num_hrefs:data_channel_is_entertainment,
-    ## num_hrefs:data_channel_is_bus,
-    ## num_hrefs:data_channel_is_tech,
-    ## num_hrefs:data_channel_is_world,
-    ## num_self_hrefs:data_channel_is_lifestyle,
-    ## num_self_hrefs:data_channel_is_entertainment,
-    ## num_self_hrefs:data_channel_is_bus,
-    ## num_self_hrefs:data_channel_is_tech,
-    ## num_self_hrefs:data_channel_is_world,
-    ## num_imgs:data_channel_is_lifestyle,
-    ## num_imgs:data_channel_is_entertainment,
-    ## num_imgs:data_channel_is_bus,
-    ## num_imgs:data_channel_is_tech,
-    ## num_imgs:data_channel_is_world,
-    ## num_videos:data_channel_is_lifestyle,
-    ## num_videos:data_channel_is_entertainment,
-    ## num_videos:data_channel_is_bus,
-    ## num_videos:data_channel_is_tech,
-    ## num_videos:data_channel_is_world,
-    ## average_token_length:data_channel_is_lifestyle,
-    ## average_token_length:data_channel_is_entertainment,
-    ## average_token_length:data_channel_is_bus,
-    ## average_token_length:data_channel_is_tech,
-    ## average_token_length:data_channel_is_world,
-    ## num_keywords:data_channel_is_lifestyle,
-    ## num_keywords:data_channel_is_entertainment,
-    ## num_keywords:data_channel_is_bus,
-    ## num_keywords:data_channel_is_tech,
-    ## num_keywords:data_channel_is_world,
-    ## data_channel_is_lifestyle:data_channel_is_entertainment,
-    ## data_channel_is_lifestyle:data_channel_is_bus,
-    ## data_channel_is_lifestyle:data_channel_is_socmed,
-    ## data_channel_is_lifestyle:data_channel_is_tech,
-    ## data_channel_is_lifestyle:data_channel_is_world,
-    ## data_channel_is_lifestyle:kw_min_min,
-    ## data_channel_is_lifestyle:kw_max_min,
-    ## data_channel_is_lifestyle:kw_avg_min,
-    ## data_channel_is_lifestyle:kw_min_max,
-    ## data_channel_is_lifestyle:kw_max_max,
-    ## data_channel_is_lifestyle:kw_avg_max,
-    ## data_channel_is_lifestyle:kw_min_avg,
-    ## data_channel_is_lifestyle:kw_max_avg,
-    ## data_channel_is_lifestyle:kw_avg_avg,
-    ## data_channel_is_lifestyle:self_reference_min_shares,
-    ## data_channel_is_lifestyle:self_reference_max_shares,
-    ## data_channel_is_lifestyle:self_reference_avg_sharess,
-    ## data_channel_is_lifestyle:weekday_is_monday,
-    ## data_channel_is_lifestyle:weekday_is_tuesday,
-    ## data_channel_is_lifestyle:weekday_is_wednesday,
-    ## data_channel_is_lifestyle:weekday_is_thursday,
-    ## data_channel_is_lifestyle:weekday_is_friday,
-    ## data_channel_is_lifestyle:weekday_is_saturday,
-    ## data_channel_is_lifestyle:weekday_is_sunday,
-    ## data_channel_is_lifestyle:is_weekend,
-    ## data_channel_is_lifestyle:LDA_00,
-    ## data_channel_is_lifestyle:LDA_01,
-    ## data_channel_is_lifestyle:LDA_02,
-    ## data_channel_is_lifestyle:LDA_03,
-    ## data_channel_is_lifestyle:LDA_04,
-    ## data_channel_is_lifestyle:global_subjectivity,
-    ## data_channel_is_lifestyle:global_sentiment_polarity,
-    ## data_channel_is_lifestyle:global_rate_positive_words,
-    ## data_channel_is_lifestyle:global_rate_negative_words,
-    ## data_channel_is_lifestyle:rate_positive_words,
-    ## data_channel_is_lifestyle:rate_negative_words,
-    ## data_channel_is_lifestyle:avg_positive_polarity,
-    ## data_channel_is_lifestyle:min_positive_polarity,
-    ## data_channel_is_lifestyle:max_positive_polarity,
-    ## data_channel_is_lifestyle:avg_negative_polarity,
-    ## data_channel_is_lifestyle:min_negative_polarity,
-    ## data_channel_is_lifestyle:max_negative_polarity,
-    ## data_channel_is_lifestyle:title_subjectivity,
-    ## data_channel_is_lifestyle:title_sentiment_polarity,
-    ## data_channel_is_lifestyle:abs_title_subjectivity,
-    ## data_channel_is_lifestyle:abs_title_sentiment_polarity,
-    ## data_channel_is_entertainment:data_channel_is_bus,
-    ## data_channel_is_entertainment:data_channel_is_socmed,
-    ## data_channel_is_entertainment:data_channel_is_tech,
-    ## data_channel_is_entertainment:data_channel_is_world,
-    ## data_channel_is_entertainment:kw_min_min,
-    ## data_channel_is_entertainment:kw_max_min,
-    ## data_channel_is_entertainment:kw_avg_min,
-    ## data_channel_is_entertainment:kw_min_max,
-    ## data_channel_is_entertainment:kw_max_max,
-    ## data_channel_is_entertainment:kw_avg_max,
-    ## data_channel_is_entertainment:kw_min_avg,
-    ## data_channel_is_entertainment:kw_max_avg,
-    ## data_channel_is_entertainment:kw_avg_avg,
-    ## data_channel_is_entertainment:self_reference_min_shares,
-    ## data_channel_is_entertainment:self_reference_max_shares,
-    ## data_channel_is_entertainment:self_reference_avg_sharess,
-    ## data_channel_is_entertainment:weekday_is_monday,
-    ## data_channel_is_entertainment:weekday_is_tuesday,
-    ## data_channel_is_entertainment:weekday_is_wednesday,
-    ## data_channel_is_entertainment:weekday_is_thursday,
-    ## data_channel_is_entertainment:weekday_is_friday,
-    ## data_channel_is_entertainment:weekday_is_saturday,
-    ## data_channel_is_entertainment:weekday_is_sunday,
-    ## data_channel_is_entertainment:is_weekend,
-    ## data_channel_is_entertainment:LDA_00,
-    ## data_channel_is_entertainment:LDA_01,
-    ## data_channel_is_entertainment:LDA_02,
-    ## data_channel_is_entertainment:LDA_03,
-    ## data_channel_is_entertainment:LDA_04,
-    ## data_channel_is_entertainment:global_subjectivity,
-    ## data_channel_is_entertainment:global_sentiment_polarity,
-    ## data_channel_is_entertainment:global_rate_positive_words,
-    ## data_channel_is_entertainment:global_rate_negative_words,
-    ## data_channel_is_entertainment:rate_positive_words,
-    ## data_channel_is_entertainment:rate_negative_words,
-    ## data_channel_is_entertainment:avg_positive_polarity,
-    ## data_channel_is_entertainment:min_positive_polarity,
-    ## data_channel_is_entertainment:max_positive_polarity,
-    ## data_channel_is_entertainment:avg_negative_polarity,
-    ## data_channel_is_entertainment:min_negative_polarity,
-    ## data_channel_is_entertainment:max_negative_polarity,
-    ## data_channel_is_entertainment:title_subjectivity,
-    ## data_channel_is_entertainment:title_sentiment_polarity,
-    ## data_channel_is_entertainment:abs_title_subjectivity,
-    ## data_channel_is_entertainment:abs_title_sentiment_polarity,
-    ## data_channel_is_bus:data_channel_is_socmed,
-    ## data_channel_is_bus:data_channel_is_tech,
-    ## data_channel_is_bus:data_channel_is_world,
-    ## data_channel_is_bus:kw_min_min,
-    ## data_channel_is_bus:kw_max_min,
-    ## data_channel_is_bus:kw_avg_min,
-    ## data_channel_is_bus:kw_min_max,
-    ## data_channel_is_bus:kw_max_max,
-    ## data_channel_is_bus:kw_avg_max,
-    ## data_channel_is_bus:kw_min_avg,
-    ## data_channel_is_bus:kw_max_avg,
-    ## data_channel_is_bus:kw_avg_avg,
-    ## data_channel_is_bus:self_reference_min_shares,
-    ## data_channel_is_bus:self_reference_max_shares,
-    ## data_channel_is_bus:self_reference_avg_sharess,
-    ## data_channel_is_bus:weekday_is_monday,
-    ## data_channel_is_bus:weekday_is_tuesday,
-    ## data_channel_is_bus:weekday_is_wednesday,
-    ## data_channel_is_bus:weekday_is_thursday,
-    ## data_channel_is_bus:weekday_is_friday,
-    ## data_channel_is_bus:weekday_is_saturday,
-    ## data_channel_is_bus:weekday_is_sunday,
-    ## data_channel_is_bus:is_weekend,
-    ## data_channel_is_bus:LDA_00,
-    ## data_channel_is_bus:LDA_01,
-    ## data_channel_is_bus:LDA_02,
-    ## data_channel_is_bus:LDA_03,
-    ## data_channel_is_bus:LDA_04,
-    ## data_channel_is_bus:global_subjectivity,
-    ## data_channel_is_bus:global_sentiment_polarity,
-    ## data_channel_is_bus:global_rate_positive_words,
-    ## data_channel_is_bus:global_rate_negative_words,
-    ## data_channel_is_bus:rate_positive_words,
-    ## data_channel_is_bus:rate_negative_words,
-    ## data_channel_is_bus:avg_positive_polarity,
-    ## data_channel_is_bus:min_positive_polarity,
-    ## data_channel_is_bus:max_positive_polarity,
-    ## data_channel_is_bus:avg_negative_polarity,
-    ## data_channel_is_bus:min_negative_polarity,
-    ## data_channel
-
-    ## Warning in predict.lm(modelFit, newdata):
-    ## prediction from a rank-deficient fit may be
-    ## misleading
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment,
-    ## data_channel_is_bus, data_channel_is_socmed,
-    ## data_channel_is_tech, data_channel_is_world,
-    ## n_tokens_title:data_channel_is_lifestyle,
-    ## n_tokens_title:data_channel_is_entertainment,
-    ## n_tokens_title:data_channel_is_bus,
-    ## n_tokens_title:data_channel_is_tech,
-    ## n_tokens_title:data_channel_is_world,
-    ## n_tokens_content:data_channel_is_lifestyle,
-    ## n_tokens_content:data_channel_is_entertainment,
-    ## n_tokens_content:data_channel_is_bus,
-    ## n_tokens_content:data_channel_is_tech,
-    ## n_tokens_content:data_channel_is_world,
-    ## n_unique_tokens:data_channel_is_lifestyle,
-    ## n_unique_tokens:data_channel_is_entertainment,
-    ## n_unique_tokens:data_channel_is_bus,
-    ## n_unique_tokens:data_channel_is_tech,
-    ## n_unique_tokens:data_channel_is_world,
-    ## n_non_stop_words:data_channel_is_lifestyle,
-    ## n_non_stop_words:data_channel_is_entertainment,
-    ## n_non_stop_words:data_channel_is_bus,
-    ## n_non_stop_words:data_channel_is_tech,
-    ## n_non_stop_words:data_channel_is_world,
-    ## n_non_stop_unique_tokens:data_channel_is_lifestyle,
-    ## n_non_stop_unique_tokens:data_channel_is_entertainment,
-    ## n_non_stop_unique_tokens:data_channel_is_bus,
-    ## n_non_stop_unique_tokens:data_channel_is_tech,
-    ## n_non_stop_unique_tokens:data_channel_is_world,
-    ## num_hrefs:data_channel_is_lifestyle,
-    ## num_hrefs:data_channel_is_entertainment,
-    ## num_hrefs:data_channel_is_bus,
-    ## num_hrefs:data_channel_is_tech,
-    ## num_hrefs:data_channel_is_world,
-    ## num_self_hrefs:data_channel_is_lifestyle,
-    ## num_self_hrefs:data_channel_is_entertainment,
-    ## num_self_hrefs:data_channel_is_bus,
-    ## num_self_hrefs:data_channel_is_tech,
-    ## num_self_hrefs:data_channel_is_world,
-    ## num_imgs:data_channel_is_lifestyle,
-    ## num_imgs:data_channel_is_entertainment,
-    ## num_imgs:data_channel_is_bus,
-    ## num_imgs:data_channel_is_tech,
-    ## num_imgs:data_channel_is_world,
-    ## num_videos:data_channel_is_lifestyle,
-    ## num_videos:data_channel_is_entertainment,
-    ## num_videos:data_channel_is_bus,
-    ## num_videos:data_channel_is_tech,
-    ## num_videos:data_channel_is_world,
-    ## average_token_length:data_channel_is_lifestyle,
-    ## average_token_length:data_channel_is_entertainment,
-    ## average_token_length:data_channel_is_bus,
-    ## average_token_length:data_channel_is_tech,
-    ## average_token_length:data_channel_is_world,
-    ## num_keywords:data_channel_is_lifestyle,
-    ## num_keywords:data_channel_is_entertainment,
-    ## num_keywords:data_channel_is_bus,
-    ## num_keywords:data_channel_is_tech,
-    ## num_keywords:data_channel_is_world,
-    ## data_channel_is_lifestyle:data_channel_is_entertainment,
-    ## data_channel_is_lifestyle:data_channel_is_bus,
-    ## data_channel_is_lifestyle:data_channel_is_socmed,
-    ## data_channel_is_lifestyle:data_channel_is_tech,
-    ## data_channel_is_lifestyle:data_channel_is_world,
-    ## data_channel_is_lifestyle:kw_min_min,
-    ## data_channel_is_lifestyle:kw_max_min,
-    ## data_channel_is_lifestyle:kw_avg_min,
-    ## data_channel_is_lifestyle:kw_min_max,
-    ## data_channel_is_lifestyle:kw_max_max,
-    ## data_channel_is_lifestyle:kw_avg_max,
-    ## data_channel_is_lifestyle:kw_min_avg,
-    ## data_channel_is_lifestyle:kw_max_avg,
-    ## data_channel_is_lifestyle:kw_avg_avg,
-    ## data_channel_is_lifestyle:self_reference_min_shares,
-    ## data_channel_is_lifestyle:self_reference_max_shares,
-    ## data_channel_is_lifestyle:self_reference_avg_sharess,
-    ## data_channel_is_lifestyle:weekday_is_monday,
-    ## data_channel_is_lifestyle:weekday_is_tuesday,
-    ## data_channel_is_lifestyle:weekday_is_wednesday,
-    ## data_channel_is_lifestyle:weekday_is_thursday,
-    ## data_channel_is_lifestyle:weekday_is_friday,
-    ## data_channel_is_lifestyle:weekday_is_saturday,
-    ## data_channel_is_lifestyle:weekday_is_sunday,
-    ## data_channel_is_lifestyle:is_weekend,
-    ## data_channel_is_lifestyle:LDA_00,
-    ## data_channel_is_lifestyle:LDA_01,
-    ## data_channel_is_lifestyle:LDA_02,
-    ## data_channel_is_lifestyle:LDA_03,
-    ## data_channel_is_lifestyle:LDA_04,
-    ## data_channel_is_lifestyle:global_subjectivity,
-    ## data_channel_is_lifestyle:global_sentiment_polarity,
-    ## data_channel_is_lifestyle:global_rate_positive_words,
-    ## data_channel_is_lifestyle:global_rate_negative_words,
-    ## data_channel_is_lifestyle:rate_positive_words,
-    ## data_channel_is_lifestyle:rate_negative_words,
-    ## data_channel_is_lifestyle:avg_positive_polarity,
-    ## data_channel_is_lifestyle:min_positive_polarity,
-    ## data_channel_is_lifestyle:max_positive_polarity,
-    ## data_channel_is_lifestyle:avg_negative_polarity,
-    ## data_channel_is_lifestyle:min_negative_polarity,
-    ## data_channel_is_lifestyle:max_negative_polarity,
-    ## data_channel_is_lifestyle:title_subjectivity,
-    ## data_channel_is_lifestyle:title_sentiment_polarity,
-    ## data_channel_is_lifestyle:abs_title_subjectivity,
-    ## data_channel_is_lifestyle:abs_title_sentiment_polarity,
-    ## data_channel_is_entertainment:data_channel_is_bus,
-    ## data_channel_is_entertainment:data_channel_is_socmed,
-    ## data_channel_is_entertainment:data_channel_is_tech,
-    ## data_channel_is_entertainment:data_channel_is_world,
-    ## data_channel_is_entertainment:kw_min_min,
-    ## data_channel_is_entertainment:kw_max_min,
-    ## data_channel_is_entertainment:kw_avg_min,
-    ## data_channel_is_entertainment:kw_min_max,
-    ## data_channel_is_entertainment:kw_max_max,
-    ## data_channel_is_entertainment:kw_avg_max,
-    ## data_channel_is_entertainment:kw_min_avg,
-    ## data_channel_is_entertainment:kw_max_avg,
-    ## data_channel_is_entertainment:kw_avg_avg,
-    ## data_channel_is_entertainment:self_reference_min_shares,
-    ## data_channel_is_entertainment:self_reference_max_shares,
-    ## data_channel_is_entertainment:self_reference_avg_sharess,
-    ## data_channel_is_entertainment:weekday_is_monday,
-    ## data_channel_is_entertainment:weekday_is_tuesday,
-    ## data_channel_is_entertainment:weekday_is_wednesday,
-    ## data_channel_is_entertainment:weekday_is_thursday,
-    ## data_channel_is_entertainment:weekday_is_friday,
-    ## data_channel_is_entertainment:weekday_is_saturday,
-    ## data_channel_is_entertainment:weekday_is_sunday,
-    ## data_channel_is_entertainment:is_weekend,
-    ## data_channel_is_entertainment:LDA_00,
-    ## data_channel_is_entertainment:LDA_01,
-    ## data_channel_is_entertainment:LDA_02,
-    ## data_channel_is_entertainment:LDA_03,
-    ## data_channel_is_entertainment:LDA_04,
-    ## data_channel_is_entertainment:global_subjectivity,
-    ## data_channel_is_entertainment:global_sentiment_polarity,
-    ## data_channel_is_entertainment:global_rate_positive_words,
-    ## data_channel_is_entertainment:global_rate_negative_words,
-    ## data_channel_is_entertainment:rate_positive_words,
-    ## data_channel_is_entertainment:rate_negative_words,
-    ## data_channel_is_entertainment:avg_positive_polarity,
-    ## data_channel_is_entertainment:min_positive_polarity,
-    ## data_channel_is_entertainment:max_positive_polarity,
-    ## data_channel_is_entertainment:avg_negative_polarity,
-    ## data_channel_is_entertainment:min_negative_polarity,
-    ## data_channel_is_entertainment:max_negative_polarity,
-    ## data_channel_is_entertainment:title_subjectivity,
-    ## data_channel_is_entertainment:title_sentiment_polarity,
-    ## data_channel_is_entertainment:abs_title_subjectivity,
-    ## data_channel_is_entertainment:abs_title_sentiment_polarity,
-    ## data_channel_is_bus:data_channel_is_socmed,
-    ## data_channel_is_bus:data_channel_is_tech,
-    ## data_channel_is_bus:data_channel_is_world,
-    ## data_channel_is_bus:kw_min_min,
-    ## data_channel_is_bus:kw_max_min,
-    ## data_channel_is_bus:kw_avg_min,
-    ## data_channel_is_bus:kw_min_max,
-    ## data_channel_is_bus:kw_max_max,
-    ## data_channel_is_bus:kw_avg_max,
-    ## data_channel_is_bus:kw_min_avg,
-    ## data_channel_is_bus:kw_max_avg,
-    ## data_channel_is_bus:kw_avg_avg,
-    ## data_channel_is_bus:self_reference_min_shares,
-    ## data_channel_is_bus:self_reference_max_shares,
-    ## data_channel_is_bus:self_reference_avg_sharess,
-    ## data_channel_is_bus:weekday_is_monday,
-    ## data_channel_is_bus:weekday_is_tuesday,
-    ## data_channel_is_bus:weekday_is_wednesday,
-    ## data_channel_is_bus:weekday_is_thursday,
-    ## data_channel_is_bus:weekday_is_friday,
-    ## data_channel_is_bus:weekday_is_saturday,
-    ## data_channel_is_bus:weekday_is_sunday,
-    ## data_channel_is_bus:is_weekend,
-    ## data_channel_is_bus:LDA_00,
-    ## data_channel_is_bus:LDA_01,
-    ## data_channel_is_bus:LDA_02,
-    ## data_channel_is_bus:LDA_03,
-    ## data_channel_is_bus:LDA_04,
-    ## data_channel_is_bus:global_subjectivity,
-    ## data_channel_is_bus:global_sentiment_polarity,
-    ## data_channel_is_bus:global_rate_positive_words,
-    ## data_channel_is_bus:global_rate_negative_words,
-    ## data_channel_is_bus:rate_positive_words,
-    ## data_channel_is_bus:rate_negative_words,
-    ## data_channel_is_bus:avg_positive_polarity,
-    ## data_channel_is_bus:min_positive_polarity,
-    ## data_channel_is_bus:max_positive_polarity,
-    ## data_channel_is_bus:avg_negative_polarity,
-    ## data_channel_is_bus:min_negative_polarity,
-    ## data_channel
-
-    ## Warning in predict.lm(modelFit, newdata):
-    ## prediction from a rank-deficient fit may be
-    ## misleading
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment,
-    ## data_channel_is_bus, data_channel_is_socmed,
-    ## data_channel_is_tech, data_channel_is_world,
-    ## n_tokens_title:data_channel_is_lifestyle,
-    ## n_tokens_title:data_channel_is_entertainment,
-    ## n_tokens_title:data_channel_is_bus,
-    ## n_tokens_title:data_channel_is_tech,
-    ## n_tokens_title:data_channel_is_world,
-    ## n_tokens_content:data_channel_is_lifestyle,
-    ## n_tokens_content:data_channel_is_entertainment,
-    ## n_tokens_content:data_channel_is_bus,
-    ## n_tokens_content:data_channel_is_tech,
-    ## n_tokens_content:data_channel_is_world,
-    ## n_unique_tokens:data_channel_is_lifestyle,
-    ## n_unique_tokens:data_channel_is_entertainment,
-    ## n_unique_tokens:data_channel_is_bus,
-    ## n_unique_tokens:data_channel_is_tech,
-    ## n_unique_tokens:data_channel_is_world,
-    ## n_non_stop_words:data_channel_is_lifestyle,
-    ## n_non_stop_words:data_channel_is_entertainment,
-    ## n_non_stop_words:data_channel_is_bus,
-    ## n_non_stop_words:data_channel_is_tech,
-    ## n_non_stop_words:data_channel_is_world,
-    ## n_non_stop_unique_tokens:data_channel_is_lifestyle,
-    ## n_non_stop_unique_tokens:data_channel_is_entertainment,
-    ## n_non_stop_unique_tokens:data_channel_is_bus,
-    ## n_non_stop_unique_tokens:data_channel_is_tech,
-    ## n_non_stop_unique_tokens:data_channel_is_world,
-    ## num_hrefs:data_channel_is_lifestyle,
-    ## num_hrefs:data_channel_is_entertainment,
-    ## num_hrefs:data_channel_is_bus,
-    ## num_hrefs:data_channel_is_tech,
-    ## num_hrefs:data_channel_is_world,
-    ## num_self_hrefs:data_channel_is_lifestyle,
-    ## num_self_hrefs:data_channel_is_entertainment,
-    ## num_self_hrefs:data_channel_is_bus,
-    ## num_self_hrefs:data_channel_is_tech,
-    ## num_self_hrefs:data_channel_is_world,
-    ## num_imgs:data_channel_is_lifestyle,
-    ## num_imgs:data_channel_is_entertainment,
-    ## num_imgs:data_channel_is_bus,
-    ## num_imgs:data_channel_is_tech,
-    ## num_imgs:data_channel_is_world,
-    ## num_videos:data_channel_is_lifestyle,
-    ## num_videos:data_channel_is_entertainment,
-    ## num_videos:data_channel_is_bus,
-    ## num_videos:data_channel_is_tech,
-    ## num_videos:data_channel_is_world,
-    ## average_token_length:data_channel_is_lifestyle,
-    ## average_token_length:data_channel_is_entertainment,
-    ## average_token_length:data_channel_is_bus,
-    ## average_token_length:data_channel_is_tech,
-    ## average_token_length:data_channel_is_world,
-    ## num_keywords:data_channel_is_lifestyle,
-    ## num_keywords:data_channel_is_entertainment,
-    ## num_keywords:data_channel_is_bus,
-    ## num_keywords:data_channel_is_tech,
-    ## num_keywords:data_channel_is_world,
-    ## data_channel_is_lifestyle:data_channel_is_entertainment,
-    ## data_channel_is_lifestyle:data_channel_is_bus,
-    ## data_channel_is_lifestyle:data_channel_is_socmed,
-    ## data_channel_is_lifestyle:data_channel_is_tech,
-    ## data_channel_is_lifestyle:data_channel_is_world,
-    ## data_channel_is_lifestyle:kw_min_min,
-    ## data_channel_is_lifestyle:kw_max_min,
-    ## data_channel_is_lifestyle:kw_avg_min,
-    ## data_channel_is_lifestyle:kw_min_max,
-    ## data_channel_is_lifestyle:kw_max_max,
-    ## data_channel_is_lifestyle:kw_avg_max,
-    ## data_channel_is_lifestyle:kw_min_avg,
-    ## data_channel_is_lifestyle:kw_max_avg,
-    ## data_channel_is_lifestyle:kw_avg_avg,
-    ## data_channel_is_lifestyle:self_reference_min_shares,
-    ## data_channel_is_lifestyle:self_reference_max_shares,
-    ## data_channel_is_lifestyle:self_reference_avg_sharess,
-    ## data_channel_is_lifestyle:weekday_is_monday,
-    ## data_channel_is_lifestyle:weekday_is_tuesday,
-    ## data_channel_is_lifestyle:weekday_is_wednesday,
-    ## data_channel_is_lifestyle:weekday_is_thursday,
-    ## data_channel_is_lifestyle:weekday_is_friday,
-    ## data_channel_is_lifestyle:weekday_is_saturday,
-    ## data_channel_is_lifestyle:weekday_is_sunday,
-    ## data_channel_is_lifestyle:is_weekend,
-    ## data_channel_is_lifestyle:LDA_00,
-    ## data_channel_is_lifestyle:LDA_01,
-    ## data_channel_is_lifestyle:LDA_02,
-    ## data_channel_is_lifestyle:LDA_03,
-    ## data_channel_is_lifestyle:LDA_04,
-    ## data_channel_is_lifestyle:global_subjectivity,
-    ## data_channel_is_lifestyle:global_sentiment_polarity,
-    ## data_channel_is_lifestyle:global_rate_positive_words,
-    ## data_channel_is_lifestyle:global_rate_negative_words,
-    ## data_channel_is_lifestyle:rate_positive_words,
-    ## data_channel_is_lifestyle:rate_negative_words,
-    ## data_channel_is_lifestyle:avg_positive_polarity,
-    ## data_channel_is_lifestyle:min_positive_polarity,
-    ## data_channel_is_lifestyle:max_positive_polarity,
-    ## data_channel_is_lifestyle:avg_negative_polarity,
-    ## data_channel_is_lifestyle:min_negative_polarity,
-    ## data_channel_is_lifestyle:max_negative_polarity,
-    ## data_channel_is_lifestyle:title_subjectivity,
-    ## data_channel_is_lifestyle:title_sentiment_polarity,
-    ## data_channel_is_lifestyle:abs_title_subjectivity,
-    ## data_channel_is_lifestyle:abs_title_sentiment_polarity,
-    ## data_channel_is_entertainment:data_channel_is_bus,
-    ## data_channel_is_entertainment:data_channel_is_socmed,
-    ## data_channel_is_entertainment:data_channel_is_tech,
-    ## data_channel_is_entertainment:data_channel_is_world,
-    ## data_channel_is_entertainment:kw_min_min,
-    ## data_channel_is_entertainment:kw_max_min,
-    ## data_channel_is_entertainment:kw_avg_min,
-    ## data_channel_is_entertainment:kw_min_max,
-    ## data_channel_is_entertainment:kw_max_max,
-    ## data_channel_is_entertainment:kw_avg_max,
-    ## data_channel_is_entertainment:kw_min_avg,
-    ## data_channel_is_entertainment:kw_max_avg,
-    ## data_channel_is_entertainment:kw_avg_avg,
-    ## data_channel_is_entertainment:self_reference_min_shares,
-    ## data_channel_is_entertainment:self_reference_max_shares,
-    ## data_channel_is_entertainment:self_reference_avg_sharess,
-    ## data_channel_is_entertainment:weekday_is_monday,
-    ## data_channel_is_entertainment:weekday_is_tuesday,
-    ## data_channel_is_entertainment:weekday_is_wednesday,
-    ## data_channel_is_entertainment:weekday_is_thursday,
-    ## data_channel_is_entertainment:weekday_is_friday,
-    ## data_channel_is_entertainment:weekday_is_saturday,
-    ## data_channel_is_entertainment:weekday_is_sunday,
-    ## data_channel_is_entertainment:is_weekend,
-    ## data_channel_is_entertainment:LDA_00,
-    ## data_channel_is_entertainment:LDA_01,
-    ## data_channel_is_entertainment:LDA_02,
-    ## data_channel_is_entertainment:LDA_03,
-    ## data_channel_is_entertainment:LDA_04,
-    ## data_channel_is_entertainment:global_subjectivity,
-    ## data_channel_is_entertainment:global_sentiment_polarity,
-    ## data_channel_is_entertainment:global_rate_positive_words,
-    ## data_channel_is_entertainment:global_rate_negative_words,
-    ## data_channel_is_entertainment:rate_positive_words,
-    ## data_channel_is_entertainment:rate_negative_words,
-    ## data_channel_is_entertainment:avg_positive_polarity,
-    ## data_channel_is_entertainment:min_positive_polarity,
-    ## data_channel_is_entertainment:max_positive_polarity,
-    ## data_channel_is_entertainment:avg_negative_polarity,
-    ## data_channel_is_entertainment:min_negative_polarity,
-    ## data_channel_is_entertainment:max_negative_polarity,
-    ## data_channel_is_entertainment:title_subjectivity,
-    ## data_channel_is_entertainment:title_sentiment_polarity,
-    ## data_channel_is_entertainment:abs_title_subjectivity,
-    ## data_channel_is_entertainment:abs_title_sentiment_polarity,
-    ## data_channel_is_bus:data_channel_is_socmed,
-    ## data_channel_is_bus:data_channel_is_tech,
-    ## data_channel_is_bus:data_channel_is_world,
-    ## data_channel_is_bus:kw_min_min,
-    ## data_channel_is_bus:kw_max_min,
-    ## data_channel_is_bus:kw_avg_min,
-    ## data_channel_is_bus:kw_min_max,
-    ## data_channel_is_bus:kw_max_max,
-    ## data_channel_is_bus:kw_avg_max,
-    ## data_channel_is_bus:kw_min_avg,
-    ## data_channel_is_bus:kw_max_avg,
-    ## data_channel_is_bus:kw_avg_avg,
-    ## data_channel_is_bus:self_reference_min_shares,
-    ## data_channel_is_bus:self_reference_max_shares,
-    ## data_channel_is_bus:self_reference_avg_sharess,
-    ## data_channel_is_bus:weekday_is_monday,
-    ## data_channel_is_bus:weekday_is_tuesday,
-    ## data_channel_is_bus:weekday_is_wednesday,
-    ## data_channel_is_bus:weekday_is_thursday,
-    ## data_channel_is_bus:weekday_is_friday,
-    ## data_channel_is_bus:weekday_is_saturday,
-    ## data_channel_is_bus:weekday_is_sunday,
-    ## data_channel_is_bus:is_weekend,
-    ## data_channel_is_bus:LDA_00,
-    ## data_channel_is_bus:LDA_01,
-    ## data_channel_is_bus:LDA_02,
-    ## data_channel_is_bus:LDA_03,
-    ## data_channel_is_bus:LDA_04,
-    ## data_channel_is_bus:global_subjectivity,
-    ## data_channel_is_bus:global_sentiment_polarity,
-    ## data_channel_is_bus:global_rate_positive_words,
-    ## data_channel_is_bus:global_rate_negative_words,
-    ## data_channel_is_bus:rate_positive_words,
-    ## data_channel_is_bus:rate_negative_words,
-    ## data_channel_is_bus:avg_positive_polarity,
-    ## data_channel_is_bus:min_positive_polarity,
-    ## data_channel_is_bus:max_positive_polarity,
-    ## data_channel_is_bus:avg_negative_polarity,
-    ## data_channel_is_bus:min_negative_polarity,
-    ## data_channel
-
-    ## Warning in predict.lm(modelFit, newdata):
-    ## prediction from a rank-deficient fit may be
-    ## misleading
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment,
-    ## data_channel_is_bus, data_channel_is_socmed,
-    ## data_channel_is_tech, data_channel_is_world,
-    ## n_tokens_title:data_channel_is_lifestyle,
-    ## n_tokens_title:data_channel_is_entertainment,
-    ## n_tokens_title:data_channel_is_bus,
-    ## n_tokens_title:data_channel_is_tech,
-    ## n_tokens_title:data_channel_is_world,
-    ## n_tokens_content:data_channel_is_lifestyle,
-    ## n_tokens_content:data_channel_is_entertainment,
-    ## n_tokens_content:data_channel_is_bus,
-    ## n_tokens_content:data_channel_is_tech,
-    ## n_tokens_content:data_channel_is_world,
-    ## n_unique_tokens:data_channel_is_lifestyle,
-    ## n_unique_tokens:data_channel_is_entertainment,
-    ## n_unique_tokens:data_channel_is_bus,
-    ## n_unique_tokens:data_channel_is_tech,
-    ## n_unique_tokens:data_channel_is_world,
-    ## n_non_stop_words:data_channel_is_lifestyle,
-    ## n_non_stop_words:data_channel_is_entertainment,
-    ## n_non_stop_words:data_channel_is_bus,
-    ## n_non_stop_words:data_channel_is_tech,
-    ## n_non_stop_words:data_channel_is_world,
-    ## n_non_stop_unique_tokens:data_channel_is_lifestyle,
-    ## n_non_stop_unique_tokens:data_channel_is_entertainment,
-    ## n_non_stop_unique_tokens:data_channel_is_bus,
-    ## n_non_stop_unique_tokens:data_channel_is_tech,
-    ## n_non_stop_unique_tokens:data_channel_is_world,
-    ## num_hrefs:data_channel_is_lifestyle,
-    ## num_hrefs:data_channel_is_entertainment,
-    ## num_hrefs:data_channel_is_bus,
-    ## num_hrefs:data_channel_is_tech,
-    ## num_hrefs:data_channel_is_world,
-    ## num_self_hrefs:data_channel_is_lifestyle,
-    ## num_self_hrefs:data_channel_is_entertainment,
-    ## num_self_hrefs:data_channel_is_bus,
-    ## num_self_hrefs:data_channel_is_tech,
-    ## num_self_hrefs:data_channel_is_world,
-    ## num_imgs:data_channel_is_lifestyle,
-    ## num_imgs:data_channel_is_entertainment,
-    ## num_imgs:data_channel_is_bus,
-    ## num_imgs:data_channel_is_tech,
-    ## num_imgs:data_channel_is_world,
-    ## num_videos:data_channel_is_lifestyle,
-    ## num_videos:data_channel_is_entertainment,
-    ## num_videos:data_channel_is_bus,
-    ## num_videos:data_channel_is_tech,
-    ## num_videos:data_channel_is_world,
-    ## average_token_length:data_channel_is_lifestyle,
-    ## average_token_length:data_channel_is_entertainment,
-    ## average_token_length:data_channel_is_bus,
-    ## average_token_length:data_channel_is_tech,
-    ## average_token_length:data_channel_is_world,
-    ## num_keywords:data_channel_is_lifestyle,
-    ## num_keywords:data_channel_is_entertainment,
-    ## num_keywords:data_channel_is_bus,
-    ## num_keywords:data_channel_is_tech,
-    ## num_keywords:data_channel_is_world,
-    ## data_channel_is_lifestyle:data_channel_is_entertainment,
-    ## data_channel_is_lifestyle:data_channel_is_bus,
-    ## data_channel_is_lifestyle:data_channel_is_socmed,
-    ## data_channel_is_lifestyle:data_channel_is_tech,
-    ## data_channel_is_lifestyle:data_channel_is_world,
-    ## data_channel_is_lifestyle:kw_min_min,
-    ## data_channel_is_lifestyle:kw_max_min,
-    ## data_channel_is_lifestyle:kw_avg_min,
-    ## data_channel_is_lifestyle:kw_min_max,
-    ## data_channel_is_lifestyle:kw_max_max,
-    ## data_channel_is_lifestyle:kw_avg_max,
-    ## data_channel_is_lifestyle:kw_min_avg,
-    ## data_channel_is_lifestyle:kw_max_avg,
-    ## data_channel_is_lifestyle:kw_avg_avg,
-    ## data_channel_is_lifestyle:self_reference_min_shares,
-    ## data_channel_is_lifestyle:self_reference_max_shares,
-    ## data_channel_is_lifestyle:self_reference_avg_sharess,
-    ## data_channel_is_lifestyle:weekday_is_monday,
-    ## data_channel_is_lifestyle:weekday_is_tuesday,
-    ## data_channel_is_lifestyle:weekday_is_wednesday,
-    ## data_channel_is_lifestyle:weekday_is_thursday,
-    ## data_channel_is_lifestyle:weekday_is_friday,
-    ## data_channel_is_lifestyle:weekday_is_saturday,
-    ## data_channel_is_lifestyle:weekday_is_sunday,
-    ## data_channel_is_lifestyle:is_weekend,
-    ## data_channel_is_lifestyle:LDA_00,
-    ## data_channel_is_lifestyle:LDA_01,
-    ## data_channel_is_lifestyle:LDA_02,
-    ## data_channel_is_lifestyle:LDA_03,
-    ## data_channel_is_lifestyle:LDA_04,
-    ## data_channel_is_lifestyle:global_subjectivity,
-    ## data_channel_is_lifestyle:global_sentiment_polarity,
-    ## data_channel_is_lifestyle:global_rate_positive_words,
-    ## data_channel_is_lifestyle:global_rate_negative_words,
-    ## data_channel_is_lifestyle:rate_positive_words,
-    ## data_channel_is_lifestyle:rate_negative_words,
-    ## data_channel_is_lifestyle:avg_positive_polarity,
-    ## data_channel_is_lifestyle:min_positive_polarity,
-    ## data_channel_is_lifestyle:max_positive_polarity,
-    ## data_channel_is_lifestyle:avg_negative_polarity,
-    ## data_channel_is_lifestyle:min_negative_polarity,
-    ## data_channel_is_lifestyle:max_negative_polarity,
-    ## data_channel_is_lifestyle:title_subjectivity,
-    ## data_channel_is_lifestyle:title_sentiment_polarity,
-    ## data_channel_is_lifestyle:abs_title_subjectivity,
-    ## data_channel_is_lifestyle:abs_title_sentiment_polarity,
-    ## data_channel_is_entertainment:data_channel_is_bus,
-    ## data_channel_is_entertainment:data_channel_is_socmed,
-    ## data_channel_is_entertainment:data_channel_is_tech,
-    ## data_channel_is_entertainment:data_channel_is_world,
-    ## data_channel_is_entertainment:kw_min_min,
-    ## data_channel_is_entertainment:kw_max_min,
-    ## data_channel_is_entertainment:kw_avg_min,
-    ## data_channel_is_entertainment:kw_min_max,
-    ## data_channel_is_entertainment:kw_max_max,
-    ## data_channel_is_entertainment:kw_avg_max,
-    ## data_channel_is_entertainment:kw_min_avg,
-    ## data_channel_is_entertainment:kw_max_avg,
-    ## data_channel_is_entertainment:kw_avg_avg,
-    ## data_channel_is_entertainment:self_reference_min_shares,
-    ## data_channel_is_entertainment:self_reference_max_shares,
-    ## data_channel_is_entertainment:self_reference_avg_sharess,
-    ## data_channel_is_entertainment:weekday_is_monday,
-    ## data_channel_is_entertainment:weekday_is_tuesday,
-    ## data_channel_is_entertainment:weekday_is_wednesday,
-    ## data_channel_is_entertainment:weekday_is_thursday,
-    ## data_channel_is_entertainment:weekday_is_friday,
-    ## data_channel_is_entertainment:weekday_is_saturday,
-    ## data_channel_is_entertainment:weekday_is_sunday,
-    ## data_channel_is_entertainment:is_weekend,
-    ## data_channel_is_entertainment:LDA_00,
-    ## data_channel_is_entertainment:LDA_01,
-    ## data_channel_is_entertainment:LDA_02,
-    ## data_channel_is_entertainment:LDA_03,
-    ## data_channel_is_entertainment:LDA_04,
-    ## data_channel_is_entertainment:global_subjectivity,
-    ## data_channel_is_entertainment:global_sentiment_polarity,
-    ## data_channel_is_entertainment:global_rate_positive_words,
-    ## data_channel_is_entertainment:global_rate_negative_words,
-    ## data_channel_is_entertainment:rate_positive_words,
-    ## data_channel_is_entertainment:rate_negative_words,
-    ## data_channel_is_entertainment:avg_positive_polarity,
-    ## data_channel_is_entertainment:min_positive_polarity,
-    ## data_channel_is_entertainment:max_positive_polarity,
-    ## data_channel_is_entertainment:avg_negative_polarity,
-    ## data_channel_is_entertainment:min_negative_polarity,
-    ## data_channel_is_entertainment:max_negative_polarity,
-    ## data_channel_is_entertainment:title_subjectivity,
-    ## data_channel_is_entertainment:title_sentiment_polarity,
-    ## data_channel_is_entertainment:abs_title_subjectivity,
-    ## data_channel_is_entertainment:abs_title_sentiment_polarity,
-    ## data_channel_is_bus:data_channel_is_socmed,
-    ## data_channel_is_bus:data_channel_is_tech,
-    ## data_channel_is_bus:data_channel_is_world,
-    ## data_channel_is_bus:kw_min_min,
-    ## data_channel_is_bus:kw_max_min,
-    ## data_channel_is_bus:kw_avg_min,
-    ## data_channel_is_bus:kw_min_max,
-    ## data_channel_is_bus:kw_max_max,
-    ## data_channel_is_bus:kw_avg_max,
-    ## data_channel_is_bus:kw_min_avg,
-    ## data_channel_is_bus:kw_max_avg,
-    ## data_channel_is_bus:kw_avg_avg,
-    ## data_channel_is_bus:self_reference_min_shares,
-    ## data_channel_is_bus:self_reference_max_shares,
-    ## data_channel_is_bus:self_reference_avg_sharess,
-    ## data_channel_is_bus:weekday_is_monday,
-    ## data_channel_is_bus:weekday_is_tuesday,
-    ## data_channel_is_bus:weekday_is_wednesday,
-    ## data_channel_is_bus:weekday_is_thursday,
-    ## data_channel_is_bus:weekday_is_friday,
-    ## data_channel_is_bus:weekday_is_saturday,
-    ## data_channel_is_bus:weekday_is_sunday,
-    ## data_channel_is_bus:is_weekend,
-    ## data_channel_is_bus:LDA_00,
-    ## data_channel_is_bus:LDA_01,
-    ## data_channel_is_bus:LDA_02,
-    ## data_channel_is_bus:LDA_03,
-    ## data_channel_is_bus:LDA_04,
-    ## data_channel_is_bus:global_subjectivity,
-    ## data_channel_is_bus:global_sentiment_polarity,
-    ## data_channel_is_bus:global_rate_positive_words,
-    ## data_channel_is_bus:global_rate_negative_words,
-    ## data_channel_is_bus:rate_positive_words,
-    ## data_channel_is_bus:rate_negative_words,
-    ## data_channel_is_bus:avg_positive_polarity,
-    ## data_channel_is_bus:min_positive_polarity,
-    ## data_channel_is_bus:max_positive_polarity,
-    ## data_channel_is_bus:avg_negative_polarity,
-    ## data_channel_is_bus:min_negative_polarity,
-    ## data_channel
-
 ## Random Forest - Jordan
 
 Random Forest is a tree based method for fitting predictive models, that
@@ -2703,712 +1519,409 @@ ranfor <- train(shares ~ ., data = Training, method = "rf", preProcess = c("cent
                 tuneGrid = expand.grid(mtry = c(1:round(ncol(Training)/3))))
 ```
 
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
-
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
+
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
 
 ``` r
 ranfor
@@ -3446,8 +1959,7 @@ ranfor
     ##   19    5497.034  0.04289867  2677.505
     ##   20    5521.875  0.04114838  2679.858
     ## 
-    ## RMSE was used to select the optimal model
-    ##  using the smallest value.
+    ## RMSE was used to select the optimal model using the smallest value.
     ## The final value used for the model was mtry = 2.
 
 ## Boosted Tree - Jonathan
@@ -3469,42 +1981,30 @@ bt_fit <- train(
 )
 ```
 
-    ## Warning in preProcess.default(method = c("center",
-    ## "scale"), x = structure(c(10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
+    ## Warning in preProcess.default(method = c("center", "scale"), x = structure(c(10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
 
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 12:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 12:
     ## data_channel_is_lifestyle has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 13:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 13:
     ## data_channel_is_entertainment has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 14:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 14:
     ## data_channel_is_bus has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 15:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 15:
     ## data_channel_is_socmed has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 16:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 16:
     ## data_channel_is_tech has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 17:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 17:
     ## data_channel_is_world has no variation.
 
     ## Iter   TrainDeviance   ValidDeviance   StepSize   Improve
@@ -3527,35 +2027,26 @@ bt_fit <- train(
     ##    140 29850901.9405             nan     0.1000 -115291.4326
     ##    150 29716072.4324             nan     0.1000 -101248.7256
 
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 12:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 12:
     ## data_channel_is_lifestyle has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 13:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 13:
     ## data_channel_is_entertainment has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 14:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 14:
     ## data_channel_is_bus has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 15:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 15:
     ## data_channel_is_socmed has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 16:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 16:
     ## data_channel_is_tech has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 17:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 17:
     ## data_channel_is_world has no variation.
 
     ## Iter   TrainDeviance   ValidDeviance   StepSize   Improve
@@ -3578,35 +2069,26 @@ bt_fit <- train(
     ##    140 23368397.8528             nan     0.1000 -202238.7708
     ##    150 23210857.4203             nan     0.1000 12419.0680
 
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 12:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 12:
     ## data_channel_is_lifestyle has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 13:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 13:
     ## data_channel_is_entertainment has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 14:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 14:
     ## data_channel_is_bus has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 15:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 15:
     ## data_channel_is_socmed has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 16:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 16:
     ## data_channel_is_tech has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 17:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 17:
     ## data_channel_is_world has no variation.
 
     ## Iter   TrainDeviance   ValidDeviance   StepSize   Improve
@@ -3629,35 +2111,26 @@ bt_fit <- train(
     ##    140 20263881.2309             nan     0.1000 -165402.5090
     ##    150 19620716.6653             nan     0.1000 -102359.4679
 
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 12:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 12:
     ## data_channel_is_lifestyle has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 13:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 13:
     ## data_channel_is_entertainment has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 14:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 14:
     ## data_channel_is_bus has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 15:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 15:
     ## data_channel_is_socmed has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 16:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 16:
     ## data_channel_is_tech has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 17:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 17:
     ## data_channel_is_world has no variation.
 
     ## Iter   TrainDeviance   ValidDeviance   StepSize   Improve
@@ -3680,35 +2153,26 @@ bt_fit <- train(
     ##    140 26366553.8413             nan     0.1000 -158022.2177
     ##    150 26252159.6111             nan     0.1000 -122692.4517
 
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 12:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 12:
     ## data_channel_is_lifestyle has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 13:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 13:
     ## data_channel_is_entertainment has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 14:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 14:
     ## data_channel_is_bus has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 15:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 15:
     ## data_channel_is_socmed has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 16:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 16:
     ## data_channel_is_tech has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 17:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 17:
     ## data_channel_is_world has no variation.
 
     ## Iter   TrainDeviance   ValidDeviance   StepSize   Improve
@@ -3731,35 +2195,26 @@ bt_fit <- train(
     ##    140 21287509.0869             nan     0.1000 -24420.7197
     ##    150 21093223.5678             nan     0.1000 -119479.0643
 
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 12:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 12:
     ## data_channel_is_lifestyle has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 13:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 13:
     ## data_channel_is_entertainment has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 14:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 14:
     ## data_channel_is_bus has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 15:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 15:
     ## data_channel_is_socmed has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 16:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 16:
     ## data_channel_is_tech has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 17:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 17:
     ## data_channel_is_world has no variation.
 
     ## Iter   TrainDeviance   ValidDeviance   StepSize   Improve
@@ -3782,35 +2237,26 @@ bt_fit <- train(
     ##    140 17857457.7001             nan     0.1000 -110416.4153
     ##    150 17271300.2932             nan     0.1000 -79956.6419
 
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 12:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 12:
     ## data_channel_is_lifestyle has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 13:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 13:
     ## data_channel_is_entertainment has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 14:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 14:
     ## data_channel_is_bus has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 15:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 15:
     ## data_channel_is_socmed has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 16:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 16:
     ## data_channel_is_tech has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 17:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 17:
     ## data_channel_is_world has no variation.
 
     ## Iter   TrainDeviance   ValidDeviance   StepSize   Improve
@@ -3833,35 +2279,26 @@ bt_fit <- train(
     ##    140 31126384.1631             nan     0.1000 -145464.6168
     ##    150 30952931.1611             nan     0.1000 14915.7966
 
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 12:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 12:
     ## data_channel_is_lifestyle has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 13:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 13:
     ## data_channel_is_entertainment has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 14:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 14:
     ## data_channel_is_bus has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 15:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 15:
     ## data_channel_is_socmed has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 16:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 16:
     ## data_channel_is_tech has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 17:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 17:
     ## data_channel_is_world has no variation.
 
     ## Iter   TrainDeviance   ValidDeviance   StepSize   Improve
@@ -3884,35 +2321,26 @@ bt_fit <- train(
     ##    140 24119647.8649             nan     0.1000 -182496.7202
     ##    150 23768861.8750             nan     0.1000 -27565.3183
 
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 12:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 12:
     ## data_channel_is_lifestyle has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 13:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 13:
     ## data_channel_is_entertainment has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 14:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 14:
     ## data_channel_is_bus has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 15:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 15:
     ## data_channel_is_socmed has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 16:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 16:
     ## data_channel_is_tech has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 17:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 17:
     ## data_channel_is_world has no variation.
 
     ## Iter   TrainDeviance   ValidDeviance   StepSize   Improve
@@ -3935,35 +2363,26 @@ bt_fit <- train(
     ##    140 21054016.9727             nan     0.1000 -138260.3975
     ##    150 20653093.6875             nan     0.1000 -204403.7095
 
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 12:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 12:
     ## data_channel_is_lifestyle has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 13:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 13:
     ## data_channel_is_entertainment has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 14:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 14:
     ## data_channel_is_bus has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 15:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 15:
     ## data_channel_is_socmed has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 16:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 16:
     ## data_channel_is_tech has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 17:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 17:
     ## data_channel_is_world has no variation.
 
     ## Iter   TrainDeviance   ValidDeviance   StepSize   Improve
@@ -3986,35 +2405,26 @@ bt_fit <- train(
     ##    140 28228476.5595             nan     0.1000 -101454.4789
     ##    150 28040799.7268             nan     0.1000 -131653.4189
 
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 12:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 12:
     ## data_channel_is_lifestyle has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 13:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 13:
     ## data_channel_is_entertainment has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 14:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 14:
     ## data_channel_is_bus has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 15:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 15:
     ## data_channel_is_socmed has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 16:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 16:
     ## data_channel_is_tech has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 17:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 17:
     ## data_channel_is_world has no variation.
 
     ## Iter   TrainDeviance   ValidDeviance   StepSize   Improve
@@ -4037,35 +2447,26 @@ bt_fit <- train(
     ##    140 22995390.8941             nan     0.1000 -188120.2723
     ##    150 22795462.9130             nan     0.1000 -116096.6622
 
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 12:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 12:
     ## data_channel_is_lifestyle has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 13:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 13:
     ## data_channel_is_entertainment has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 14:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 14:
     ## data_channel_is_bus has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 15:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 15:
     ## data_channel_is_socmed has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 16:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 16:
     ## data_channel_is_tech has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 17:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 17:
     ## data_channel_is_world has no variation.
 
     ## Iter   TrainDeviance   ValidDeviance   StepSize   Improve
@@ -4088,35 +2489,26 @@ bt_fit <- train(
     ##    140 18068728.6890             nan     0.1000 -4502.2258
     ##    150 17573406.6394             nan     0.1000 -79974.9022
 
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 12:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 12:
     ## data_channel_is_lifestyle has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 13:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 13:
     ## data_channel_is_entertainment has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 14:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 14:
     ## data_channel_is_bus has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 15:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 15:
     ## data_channel_is_socmed has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 16:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 16:
     ## data_channel_is_tech has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 17:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 17:
     ## data_channel_is_world has no variation.
 
     ## Iter   TrainDeviance   ValidDeviance   StepSize   Improve
@@ -4139,35 +2531,26 @@ bt_fit <- train(
     ##    140 17577813.0222             nan     0.1000 2767.3811
     ##    150 17430260.2229             nan     0.1000 12021.8327
 
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 12:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 12:
     ## data_channel_is_lifestyle has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 13:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 13:
     ## data_channel_is_entertainment has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 14:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 14:
     ## data_channel_is_bus has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 15:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 15:
     ## data_channel_is_socmed has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 16:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 16:
     ## data_channel_is_tech has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 17:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 17:
     ## data_channel_is_world has no variation.
 
     ## Iter   TrainDeviance   ValidDeviance   StepSize   Improve
@@ -4190,35 +2573,26 @@ bt_fit <- train(
     ##    140 13628497.6720             nan     0.1000 -39585.3304
     ##    150 13428965.5772             nan     0.1000 -47389.4217
 
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 12:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 12:
     ## data_channel_is_lifestyle has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 13:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 13:
     ## data_channel_is_entertainment has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 14:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 14:
     ## data_channel_is_bus has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 15:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 15:
     ## data_channel_is_socmed has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 16:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 16:
     ## data_channel_is_tech has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 17:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 17:
     ## data_channel_is_world has no variation.
 
     ## Iter   TrainDeviance   ValidDeviance   StepSize   Improve
@@ -4241,35 +2615,26 @@ bt_fit <- train(
     ##    140 11389302.8558             nan     0.1000 -50946.8050
     ##    150 11133745.2378             nan     0.1000 -59198.9045
 
-    ## Warning in preProcess.default(thresh = 0.95, k =
-    ## 5, freqCut = 19, uniqueCut = 10, : These variables
-    ## have zero variances: data_channel_is_lifestyle,
-    ## data_channel_is_entertainment, data_channel_is_bus,
-    ## data_channel_is_socmed, data_channel_is_tech,
-    ## data_channel_is_world
+    ## Warning in preProcess.default(thresh = 0.95, k = 5, freqCut = 19, uniqueCut = 10, : These variables have zero
+    ## variances: data_channel_is_lifestyle, data_channel_is_entertainment, data_channel_is_bus, data_channel_is_socmed,
+    ## data_channel_is_tech, data_channel_is_world
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 12:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 12:
     ## data_channel_is_lifestyle has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 13:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 13:
     ## data_channel_is_entertainment has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 14:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 14:
     ## data_channel_is_bus has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 15:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 15:
     ## data_channel_is_socmed has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 16:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 16:
     ## data_channel_is_tech has no variation.
 
-    ## Warning in (function (x, y, offset = NULL, misc =
-    ## NULL, distribution = "bernoulli", : variable 17:
+    ## Warning in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli", : variable 17:
     ## data_channel_is_world has no variation.
 
     ## Iter   TrainDeviance   ValidDeviance   StepSize   Improve
@@ -4301,35 +2666,23 @@ bt_fit
     ## Summary of sample sizes: 1301, 1300, 1302, 1301, 1300 
     ## Resampling results across tuning parameters:
     ## 
-    ##   interaction.depth  n.trees  RMSE      Rsquared  
-    ##   1                   50      5307.278  0.02281856
-    ##   1                  100      5341.861  0.02300759
-    ##   1                  150      5337.324  0.02645574
-    ##   2                   50      5308.731  0.03354737
-    ##   2                  100      5324.490  0.04169412
-    ##   2                  150      5342.209  0.04242432
-    ##   3                   50      5305.882  0.03976201
-    ##   3                  100      5345.811  0.04668681
-    ##   3                  150      5404.000  0.04242355
-    ##   MAE     
-    ##   2579.983
-    ##   2592.613
-    ##   2592.132
-    ##   2551.265
-    ##   2565.615
-    ##   2589.154
-    ##   2541.176
-    ##   2592.966
-    ##   2655.843
+    ##   interaction.depth  n.trees  RMSE      Rsquared    MAE     
+    ##   1                   50      5307.278  0.02281856  2579.983
+    ##   1                  100      5341.861  0.02300759  2592.613
+    ##   1                  150      5337.324  0.02645574  2592.132
+    ##   2                   50      5308.731  0.03354737  2551.265
+    ##   2                  100      5324.490  0.04169412  2565.615
+    ##   2                  150      5342.209  0.04242432  2589.154
+    ##   3                   50      5305.882  0.03976201  2541.176
+    ##   3                  100      5345.811  0.04668681  2592.966
+    ##   3                  150      5404.000  0.04242355  2655.843
     ## 
-    ## Tuning parameter 'shrinkage' was held constant
-    ##  parameter 'n.minobsinnode' was held constant at
-    ##  a value of 10
-    ## RMSE was used to select the optimal model
-    ##  using the smallest value.
-    ## The final values used for the model were n.trees
-    ##  = 50, interaction.depth = 3, shrinkage = 0.1
-    ##  and n.minobsinnode = 10.
+    ## Tuning parameter 'shrinkage' was held constant at a value of 0.1
+    ## Tuning parameter 'n.minobsinnode' was held
+    ##  constant at a value of 10
+    ## RMSE was used to select the optimal model using the smallest value.
+    ## The final values used for the model were n.trees = 50, interaction.depth = 3, shrinkage = 0.1 and n.minobsinnode
+    ##  = 10.
 
 # Comparison - Jordan
 
@@ -4346,14 +2699,15 @@ predlm1 <- predict(fit1, newdata = Testing)
 LM <- postResample(predlm1, Testing$shares)
 
 # linear model 2 prediction on testing model and its performance
+predlm2 <- predict(lm_fit, newdata = Testing)
+LM2 <- postResample(predlm2, Testing$shares)
 
 # boosted tree prediction on testing model and its performance
-
-
-# NEEDS TO BE REPEATED FOR OTHER TWO MODELS - I'll do this later!
+predbt <- predict(bt_fit, newdata = Testing)
+BT <- postResample(predbt, Testing$shares)
 
 # combine each of the performance stats for the models and add a column with the model names
-dat <- data.frame(rbind(t(data.frame(LM)), t(data.frame(RF))))
+dat <- data.frame(rbind(t(data.frame(LM)), t(data.frame(RF)), t(data.frame(LM2)), t(data.frame(BT))))
 df <- as_tibble(rownames_to_column(dat, "models"))
 
 # find the model with the lowesr RMSE
