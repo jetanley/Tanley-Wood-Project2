@@ -31,6 +31,8 @@ Here are the links to each of the rendered documents:
 
 ## Render Code
 
+The rendering of the analysis was done in the [Render Analysis](https://github.com/jetanley/Tanley-Wood-Project2/blob/main/RenderAnalysis.Rmd) R Markdown file. Below is the code that was used to generate the analysis files.
+
 ```r
 data_channels = c("lifestyle", "entertainment", "bus", "socmed", "tech", "world")
 

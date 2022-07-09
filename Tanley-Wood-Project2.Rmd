@@ -22,12 +22,14 @@ The goal of this project is to determine the number of shares (how many times th
 
 While there are 61 variables in the data set, we will not use all of them for this project. The notable variables are the following:
 
-- "shares" - the number of shares the article has gotten over social media. This is the label or variable we want our models to predict for new articles
-- "data_channel_is" - a set of variables that tells if the article is in a particular category, such as business, sports, or lifestyle.
-- "weekday_is" - a set of variables that tells what day of the week the article was published on.
-- "num_keywords" - the number of keywords within the article
-- "num_images" - the number of images within the article
-- "num_videos" - the number of videos within the article
+- "shares" - The number of shares the article has gotten over social media. This is the label or variable we want our models to predict for new articles
+- "data_channel_is" - A set of variables that tells if the article is in a particular category, such as business, sports, or lifestyle.
+- "weekday_is" - A set of variables that tells what day of the week the article was published on.
+- "num_images" - The number of images within the article
+- "num_videos" - The number of videos within the article
+- "n_tokens_content" - The number of tokens (words) within the article's contents
+- "rate_positive_words" - The rate of the positive words in the article's contents
+- "rate_negative_words" - The rate of the negative words in the article's contents
 
 ## Methods
 
@@ -53,7 +55,9 @@ In order to read in the data using a relative path, be sure to have the data fil
 # read in the data
 news <- read_csv("OnlineNewsPopularity/OnlineNewsPopularity.csv")
 # sneek peek at the dataset
-head(news)
+news %>%
+  head() %>%
+  kable()
 ```
 
 ```{r weekday} 
@@ -275,7 +279,7 @@ lm_fit <- train(
 
 ## Random Forest - Jordan
 
-Random Forest is a tree based method for fitting predictive models, that averages across all trees. One may choose to use a tree based methood due to their prediction accuracy, the fact that predictors do not need to be scaled, no statistical assumptions, and a built-in variable selection process. Random forest, in particular, randomly selects a subset of $m = p / 3$ predictors. This corrects the bagging issue where every bootstrap contains a strong predictor for the first split. 
+Random Forest is a tree based method for fitting predictive models, that averages across all trees. One may choose to use a tree based method due to their prediction accuracy, the fact that predictors do not need to be scaled, no statistical assumptions, and a built-in variable selection process. Random forest, in particular, randomly selects a subset of $m = p / 3$ predictors. This corrects the bagging issue where every bootstrap contains a strong predictor for the first split. 
 
 ```{r rf, message=FALSE, warning=FALSE}
 # fandom forest model on training dataset with 5-fold cv
@@ -287,8 +291,9 @@ ranfor
 ```
 
 
-
 ## Boosted Tree - Jonathan
+
+Boosted Trees is an ensemble model similar to bagging where it builds multiple tree models. The previous tree built is used to build a new tree by taking into account the errors of the previous tree.
 
 ```{r, message=FALSE, warning=FALSE}
 tune_grid <- expand.grid(
@@ -303,6 +308,7 @@ bt_fit <- train(
   data=Training,
   method="gbm",
   preProcess = c("center", "scale"), 
+  tuneGrid = tune_grid,
   trControl = trainControl(method = "cv", number = 5)
 )
 
@@ -342,18 +348,5 @@ best <- df %>% filter(RMSE == min(RMSE)) %>% select(models)
 paste("The Best fitting model according to RMSE is", best$models, sep = " ")
 ```
 
-
-# Automation - Jonathan
-
-```{r, eval=FALSE}
-#rmarkdown::render(
-#  "Tanley-Wood-Project2.Rmd",
-#  output_format="github_document",
-#  output_dir="./Analysis",
-#  output_options = list(
-#    html_preview = FALSE
-#  )
-#)
-```
 
 
